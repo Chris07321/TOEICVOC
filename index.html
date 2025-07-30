@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>英文單字測驗 App</title>
+
+    <!-- PWA 核心標籤 -->
+    <meta name="theme-color" content="#4f46e5"/>
+    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    
+    <!-- 內嵌的 Manifest，用於定義 PWA 的外觀和行為 -->
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIuenglishqOaWhyDlk4HlrZAgUldBIiwKICAic2hvcnRfbmFtZSI6ICLlk4HlrZAiLAogICJkZXNjcmlwdGlvbiI6ICLkuIDlgLrouqvnnYDkv6HkvY3mg4XlkIjkvobvvIznlLDkvIHkuIbljIXkvJrpopHntrEgQXBwLuS7o+WHu+WPsOe7hOS4gOS4qumZkOWFrOWPuC4iLAogICJzdGFydF91cmwiOiAiL3ZvY2FiLXF1aXotcHdhLyIsCiAgInNjb3BlIjogIi92b2NhYi1xdWl6LXB3YS8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmM2Y0ZjYiLAogICJ0aGVtZV9jb2xvciI6ICIjNGY0NmU1IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbnMvaWNvbi0xOTJ4MTkyLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJpY29ucy9pY29uLTUxMng1MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9Cg==">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', 'Noto Sans TC', sans-serif;
+        }
+        .card {
+            background-color: white;
+            border-radius: 1.5rem;
+            padding: 2rem;
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            transition: all 0.3s ease-in-out;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.2s ease-in-out;
+            cursor: pointer;
+            border: none;
+        }
+        .btn-primary {
+            background-color: #4f46e5;
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+        }
+        .btn-secondary {
+            background-color: #e5e7eb;
+            color: #374151;
+        }
+        .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .option-btn {
+            background-color: #f3f4f6;
+            color: #1f2937;
+            border: 2px solid #e5e7eb;
+        }
+        .option-btn:hover:not(:disabled) {
+            background-color: #e5e7eb;
+            border-color: #d1d5db;
+        }
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+        .correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+        }
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div id="app-container" class="w-full max-w-lg mx-auto">
+
+        <!-- 主選單畫面 -->
+        <div id="home-screen" class="card text-center">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">英文單字測驗</h1>
+            <p class="text-gray-500 mb-8">請選擇測驗模式</p>
+            <div class="space-y-4">
+                <button onclick="startQuiz('multiple-choice')" class="btn btn-primary">選擇題模式</button>
+                <button onclick="startQuiz('fill-in-the-blank')" class="btn btn-primary">英翻中模式</button>
+            </div>
+        </div>
+
+        <!-- 測驗畫面 -->
+        <div id="quiz-screen" class="card hidden">
+            <div class="flex justify-between items-center mb-6">
+                <p id="progress-text" class="text-sm font-medium text-gray-500">問題 1 / 10</p>
+                <p id="score-text" class="text-sm font-medium text-gray-500">分數: 0</p>
+            </div>
+            
+            <div class="text-center mb-8">
+                <h2 id="question-word" class="text-5xl font-bold text-indigo-600 mb-2" lang="en"></h2>
+                <p id="part-of-speech" class="text-gray-500"></p>
+            </div>
+
+            <!-- 選擇題選項 -->
+            <div id="multiple-choice-options" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                <!-- 選項按鈕會由 JS 動態生成 -->
+            </div>
+
+            <!-- 填充題輸入 -->
+            <div id="fill-in-the-blank-input" class="mb-6 hidden">
+                <input type="text" id="answer-input" placeholder="請輸入中文意思..." class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
+                <button id="submit-fill-in" class="btn btn-primary mt-4">送出答案</button>
+            </div>
+
+            <div id="feedback-message" class="text-center font-bold my-4 h-6"></div>
+
+            <button id="next-btn" class="btn btn-secondary hidden">下一題</button>
+        </div>
+
+        <!-- 結果畫面 -->
+        <div id="results-screen" class="card hidden text-center">
+            <h2 class="text-3xl font-bold text-gray-800 mb-2">測驗結束！</h2>
+            <p class="text-gray-600 mb-6">您的最終成績是：</p>
+            <p id="final-score" class="text-6xl font-bold text-indigo-600 mb-8"></p>
+            <div class="space-y-4">
+                <button onclick="restartQuiz()" class="btn btn-primary">再玩一次</button>
+                <button onclick="goToMenu()" class="btn btn-secondary">返回主選單</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // --- App Logic ---
+        const vocabulary = [
+            { english: "résumé", chinese: ["履歷表"], pos: "n." },
+            { english: "opening", chinese: ["空缺", "職缺", "開張", "開始"], pos: "n." },
+            { english: "applicant", chinese: ["申請者", "應徵者"], pos: "n." },
+            { english: "requirement", chinese: ["必要條件", "要求"], pos: "n." },
+            { english: "meet", chinese: ["滿足", "符合"], pos: "v." },
+            { english: "qualified", chinese: ["有資格的", "勝任的"], pos: "adj." },
+            { english: "candidate", chinese: ["候選者", "應徵者"], pos: "n." },
+            { english: "confidence", chinese: ["信心", "自信", "信任"], pos: "n." },
+            { english: "highly", chinese: ["很", "非常"], pos: "adv." },
+            { english: "professional", chinese: ["專業的", "職業的", "專家"], pos: "adj./n." },
+            { english: "interview", chinese: ["面試"], pos: "n./v." },
+            { english: "hire", chinese: ["雇用"], pos: "v." },
+            { english: "training", chinese: ["訓練"], pos: "n." },
+            { english: "reference", chinese: ["推薦信", "參考"], pos: "n." },
+            { english: "position", chinese: ["職位", "位置", "放置"], pos: "n./v." },
+            { english: "achievement", chinese: ["成就", "達成"], pos: "n." },
+            { english: "impressed", chinese: ["感到印象深刻的"], pos: "adj." },
+            { english: "excellent", chinese: ["優秀的", "傑出的"], pos: "adj." },
+            { english: "eligible", chinese: ["有資格的", "合適的"], pos: "adj." },
+            { english: "identify", chinese: ["辨認", "認出"], pos: "v." },
+            { english: "associate", chinese: ["使有關聯"], pos: "v." },
+            { english: "condition", chinese: ["條件"], pos: "n." },
+            { english: "employment", chinese: ["雇用"], pos: "n." },
+            { english: "lack", chinese: ["缺乏"], pos: "v./n." },
+            { english: "managerial", chinese: ["管理的"], pos: "adj." },
+            { english: "diligent", chinese: ["勤奮的"], pos: "adj." },
+            { english: "familiar", chinese: ["熟悉的", "親近的"], pos: "adj." },
+            { english: "proficiency", chinese: ["熟練", "精通"], pos: "n." },
+            { english: "prospective", chinese: ["預期的", "未來的"], pos: "adj." },
+            { english: "appeal", chinese: ["呼籲", "有吸引力"], pos: "v." },
+            { english: "specialize", chinese: ["專攻", "專門從事"], pos: "v." },
+            { english: "apprehensive", chinese: ["擔心的", "憂慮的"], pos: "adj." },
+            { english: "consultant", chinese: ["顧問"], pos: "n." }
+        ];
+
+        const homeScreen = document.getElementById('home-screen');
+        const quizScreen = document.getElementById('quiz-screen');
+        const resultsScreen = document.getElementById('results-screen');
+        const progressText = document.getElementById('progress-text');
+        const scoreText = document.getElementById('score-text');
+        const questionWord = document.getElementById('question-word');
+        const partOfSpeech = document.getElementById('part-of-speech');
+        const multipleChoiceOptions = document.getElementById('multiple-choice-options');
+        const fillInTheBlankInput = document.getElementById('fill-in-the-blank-input');
+        const answerInput = document.getElementById('answer-input');
+        const submitFillInBtn = document.getElementById('submit-fill-in');
+        const feedbackMessage = document.getElementById('feedback-message');
+        const nextBtn = document.getElementById('next-btn');
+        const finalScore = document.getElementById('final-score');
+
+        let currentQuiz = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let quizMode = '';
+        const quizLength = 10;
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function startQuiz(mode) {
+            quizMode = mode;
+            currentQuestionIndex = 0;
+            score = 0;
+            shuffle(vocabulary);
+            currentQuiz = vocabulary.slice(0, quizLength);
+            homeScreen.classList.add('hidden');
+            resultsScreen.classList.add('hidden');
+            quizScreen.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            resetQuestionUI();
+            if (currentQuestionIndex >= currentQuiz.length) {
+                showResults();
+                return;
+            }
+            const question = currentQuiz[currentQuestionIndex];
+            progressText.textContent = `問題 ${currentQuestionIndex + 1} / ${quizLength}`;
+            scoreText.textContent = `分數: ${score}`;
+            questionWord.textContent = question.english;
+            partOfSpeech.textContent = question.pos;
+            if (quizMode === 'multiple-choice') {
+                fillInTheBlankInput.classList.add('hidden');
+                multipleChoiceOptions.classList.remove('hidden');
+                setupMultipleChoice(question);
+            } else {
+                multipleChoiceOptions.classList.add('hidden');
+                fillInTheBlankInput.classList.remove('hidden');
+            }
+        }
+
+        function setupMultipleChoice(correctQuestion) {
+            const distractorPool = ["公司", "薪水", "會議", "報告", "電腦", "行銷", "客戶", "合約", "專案", "截止日期", "休假", "加班", "同事", "老闆", "成功", "失敗", "學習", "溝通", "領導", "團隊合作", "創新", "策略", "市場", "產品", "服務", "價格", "品質", "效率", "目標", "資源", "解雇", "升遷", "福利"];
+            const allChineseWords = vocabulary.flatMap(word => word.chinese);
+            const combinedPool = [...new Set([...allChineseWords, ...distractorPool])];
+            const correctAnswerText = correctQuestion.chinese.join(' / ');
+            const wrongAnswersPool = combinedPool.filter(word => !correctQuestion.chinese.includes(word));
+            shuffle(wrongAnswersPool);
+            const options = [correctAnswerText];
+            for(let i=0; i < 3 && i < wrongAnswersPool.length; i++) {
+                options.push(wrongAnswersPool[i]);
+            }
+            while (options.length < 4) { options.push("其他選項"); }
+            shuffle(options);
+            multipleChoiceOptions.innerHTML = '';
+            options.forEach(optionText => {
+                const button = document.createElement('button');
+                button.className = 'btn option-btn';
+                button.textContent = optionText;
+                button.onclick = () => checkMultipleChoiceAnswer(optionText, correctQuestion, button);
+                multipleChoiceOptions.appendChild(button);
+            });
+        }
+
+        function checkMultipleChoiceAnswer(selectedAnswerText, correctQuestion, button) {
+            const buttons = multipleChoiceOptions.querySelectorAll('button');
+            buttons.forEach(btn => btn.disabled = true);
+            const correctAnswerText = correctQuestion.chinese.join(' / ');
+            if (selectedAnswerText === correctAnswerText) {
+                score++;
+                button.classList.add('correct');
+                feedbackMessage.textContent = '答對了！';
+                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-green-600';
+            } else {
+                button.classList.add('incorrect');
+                feedbackMessage.textContent = `答錯了！答案是: ${correctAnswerText}`;
+                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-red-600';
+                buttons.forEach(btn => {
+                    if (btn.textContent === correctAnswerText) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+            nextBtn.classList.remove('hidden');
+        }
+        
+        submitFillInBtn.onclick = () => {
+            const userAnswer = answerInput.value.trim();
+            if (!userAnswer) return;
+            const question = currentQuiz[currentQuestionIndex];
+            const correctAnswers = question.chinese;
+            const isCorrect = correctAnswers.some(correct => userAnswer.includes(correct) || correct.includes(userAnswer));
+            submitFillInBtn.disabled = true;
+            answerInput.disabled = true;
+            if (isCorrect) {
+                score++;
+                answerInput.classList.add('correct');
+                feedbackMessage.textContent = '答對了！';
+                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-green-600';
+            } else {
+                answerInput.classList.add('incorrect');
+                feedbackMessage.textContent = `答錯了！答案是: ${correctAnswers.join(' / ')}`;
+                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-red-600';
+            }
+            nextBtn.classList.remove('hidden');
+        };
+        
+        answerInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') submitFillInBtn.click();
+        });
+
+        nextBtn.onclick = () => {
+            currentQuestionIndex++;
+            loadQuestion();
+        };
+
+        function resetQuestionUI() {
+            feedbackMessage.textContent = '';
+            feedbackMessage.className = 'text-center font-bold my-4 h-6';
+            nextBtn.classList.add('hidden');
+            multipleChoiceOptions.innerHTML = '';
+            answerInput.value = '';
+            answerInput.className = 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition';
+            answerInput.disabled = false;
+            submitFillInBtn.disabled = false;
+        }
+
+        function showResults() {
+            quizScreen.classList.add('hidden');
+            resultsScreen.classList.remove('hidden');
+            finalScore.textContent = `${score} / ${quizLength}`;
+        }
+
+        function restartQuiz() {
+            startQuiz(quizMode);
+        }
+
+        function goToMenu() {
+            resultsScreen.classList.add('hidden');
+            homeScreen.classList.remove('hidden');
+        }
+
+        // --- PWA Service Worker Registration (Embedded) ---
+        function registerServiceWorker() {
+            if ('serviceWorker' in navigator) {
+                // 內嵌 Service Worker 的程式碼
+                const swCode = `
+                    // --- Service Worker Logic ---
+                    // !! 重要 !! 請將 REPO_NAME 改成您在 GitHub 上的儲存庫名稱
+                    const REPO_NAME = 'vocab-quiz-pwa'; 
+                    const CACHE_NAME = \`vocab-quiz-pwa-v1\`; 
+                    const BASE_URL = \`/\${REPO_NAME}/\`;
+                    // 需要被快取的檔案清單
+                    const urlsToCache = [
+                        BASE_URL,
+                        \`\${BASE_URL}index.html\`,
+                        \`\${BASE_URL}icons/icon-192x192.png\`,
+                        \`\${BASE_URL}icons/icon-512x512.png\`
+                    ];
+
+                    // 安裝事件：開啟快取並儲存檔案
+                    self.addEventListener('install', event => {
+                        event.waitUntil(
+                            caches.open(CACHE_NAME).then(cache => {
+                                console.log('Opened cache and caching files');
+                                return cache.addAll(urlsToCache).catch(err => {
+                                    console.error('Failed to cache files during install:', err);
+                                    console.log('Files to cache:', urlsToCache);
+                                });
+                            })
+                        );
+                    });
+
+                    // 啟用事件：刪除舊的快取
+                    self.addEventListener('activate', event => {
+                        event.waitUntil(
+                            caches.keys().then(cacheNames => {
+                                return Promise.all(
+                                    cacheNames.map(cacheName => {
+                                        if (cacheName !== CACHE_NAME) {
+                                            console.log('Deleting old cache:', cacheName);
+                                            return caches.delete(cacheName);
+                                        }
+                                    })
+                                );
+                            })
+                        );
+                        return self.clients.claim();
+                    });
+
+                    // 攔截請求事件：從快取或網路提供資源
+                    self.addEventListener('fetch', event => {
+                        // 處理導航請求，確保重新整理時能正確載入 index.html
+                        if (event.request.mode === 'navigate') {
+                            event.respondWith(
+                                caches.match(event.request).then(response => {
+                                    return response || fetch(event.request).catch(() => caches.match(\`\${BASE_URL}index.html\`));
+                                })
+                            );
+                            return;
+                        }
+                        
+                        // 處理其他資源請求 (CSS, JS, 圖片等)
+                        event.respondWith(
+                            caches.match(event.request).then(response => {
+                                if (response) {
+                                    return response; // 從快取中找到資源
+                                }
+                                return fetch(event.request); // 從網路請求資源
+                            })
+                        );
+                    });
+                `;
+                
+                // 透過 Blob 建立一個虛擬的 Service Worker 檔案
+                const blob = new Blob([swCode], { type: 'application/javascript' });
+                const swUrl = URL.createObjectURL(blob);
+
+                // 註冊 Service Worker
+                navigator.serviceWorker.register(swUrl)
+                    .then(registration => {
+                        console.log('Embedded ServiceWorker registration successful with scope: ', registration.scope);
+                    })
+                    .catch(err => {
+                        console.log('Embedded ServiceWorker registration failed: ', err);
+                    });
+            }
+        }
+        
+        // --- INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // 在頁面載入完成後，註冊 Service Worker
+            registerServiceWorker();
+        });
+
+    </script>
+</body>
+</html>
