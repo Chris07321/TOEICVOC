@@ -5,11 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>英文單字測驗 App</title>
 
-    <!-- PWA 核心標籤 -->
     <meta name="theme-color" content="#4f46e5"/>
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
-    <!-- 內嵌的 Manifest，用於定義 PWA 的外觀和行為 -->
     <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIuenglishqOaWhyDlk4HlrZAgUldBIiwKICAic2hvcnRfbmFtZSI6ICLlk4HlrZAiLAogICJkZXNjcmlwdGlvbiI6ICLkuIDlgLrouqvnnYDkv6HkvY3mg4XlkIjkvobvvIznlLDkvIHkuIbljIXkvJrpopHntrEgQXBwLuS7o+WHu+WPsOe7hOS4gOS4qumZkOWFrOWPuC4iLAogICJzdGFydF91cmwiOiAiL3ZvY2FiLXF1aXotcHdhLyIsCiAgInNjb3BlIjogIi92b2NhYi1xdWl6LXB3YS8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmM2Y0ZjYiLAogICJ0aGVtZV9jb2xvciI6ICIjNGY0NmU1IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbnMvaWNvbi0xOTJ4MTkyLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJpY29ucy9pY29uLTUxMng1MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9Cg==">
 
     <script src="https://cdn.tailwindcss.com"></script>
@@ -78,7 +76,6 @@
 
     <div id="app-container" class="w-full max-w-lg mx-auto">
 
-        <!-- 主選單畫面 -->
         <div id="home-screen" class="card text-center">
             <h1 class="text-3xl font-bold text-gray-800 mb-2">英文單字測驗</h1>
             <p class="text-gray-500 mb-8">請選擇測驗模式</p>
@@ -88,7 +85,6 @@
             </div>
         </div>
 
-        <!-- 測驗畫面 -->
         <div id="quiz-screen" class="card hidden">
             <div class="flex justify-between items-center mb-6">
                 <p id="progress-text" class="text-sm font-medium text-gray-500">問題 1 / 10</p>
@@ -100,12 +96,9 @@
                 <p id="part-of-speech" class="text-gray-500"></p>
             </div>
 
-            <!-- 選擇題選項 -->
             <div id="multiple-choice-options" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-                <!-- 選項按鈕會由 JS 動態生成 -->
-            </div>
+                </div>
 
-            <!-- 填充題輸入 -->
             <div id="fill-in-the-blank-input" class="mb-6 hidden">
                 <input type="text" id="answer-input" placeholder="請輸入中文意思..." class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
                 <button id="submit-fill-in" class="btn btn-primary mt-4">送出答案</button>
@@ -116,7 +109,6 @@
             <button id="next-btn" class="btn btn-secondary hidden">下一題</button>
         </div>
 
-        <!-- 結果畫面 -->
         <div id="results-screen" class="card hidden text-center">
             <h2 class="text-3xl font-bold text-gray-800 mb-2">測驗結束！</h2>
             <p class="text-gray-600 mb-6">您的最終成績是：</p>
@@ -164,44 +156,44 @@
             { english: "appeal", chinese: ["呼籲", "有吸引力"], pos: "v." },
             { english: "specialize", chinese: ["專攻", "專門從事"], pos: "v." },
             { english: "apprehensive", chinese: ["擔心的", "憂慮的"], pos: "adj." },
-            { english: "consultant", chinese: ["顧問"], pos: "n." }
-            { english: "attire", chinese: ["服裝，衣著"], pos: "n." }
-            { english: "code", chinese: ["規範，範例；密碼"], pos: "n." }
-            { english: "concern", chinese: ["擔心，憂慮"], pos: "n." }
-            { english: "policy", chinese: ["政策，規定；保單"], pos: "n." }
-            { english: "comply", chinese: ["遵守，遵從"], pos: "v." }
-            { english: "regulation.", chinese: ["規定"], pos: "n." }
-            { english: "exception", chinese: ["例外"], pos: "n." }
-            { english: "adhere", chinese: ["遵手，堅持"], pos: "v." }
-            { english: "severely", chinese: ["嚴厲地，嚴重地"], pos: "adv." }
-            { english: "refrain", chinese: ["克制，抑制"], pos: "v." }
-            { english: "permission", chinese: ["允許，許可"], pos: "n." }
-            { english: "access", chinese: ["使用權，接近；通道"], pos: "n." }
-            { english: "thoroughly", chinese: ["徹底地，完全地，非常"], pos: "adv." }
-            { english: "revise", chinese: ["修訂；變更"], pos: "v." }
-            { english: "approach", chinese: ["接近；處理方法"], pos: "n." }
-            { english: "approval", chinese: ["批准，許可"], pos: "n." }
-            { english: "form", chinese: ["表格，種類，類型"], pos: "n." }
-            { english: "immediately", chinese: ["立即，馬上"], pos: "adv." }
-            { english: "inspection", chinese: ["檢查，視察"], pos: "n." }
-            { english: "arrangement", chinese: ["安排，準備，布置"], pos: "n." }
-            { english: "procedure", chinese: ["手續，程序"], pos: "n." }
-            { english: "negative", chinese: ["負面的，消極的"], pos: "adj." }
-            { english: "mandate", chinese: ["授權，命令"], pos: "n." }
-            { english: "effect", chinese: ["效力，效果，影響"], pos: "n." }
-            { english: "drastically", chinese: ["激烈地，徹底地"], pos: "adv." }
-            { english: "according to", chinese: ["根據~，依照"], pos: "phr." }
-            { english: "enable", chinese: ["使..能夠"], pos: "v." }
-            { english: "standard", chinese: ["標準，規範"], pos: "n." }
-            { english: "constant", chinese: ["持續的，不斷的"], pos: "adj." }
-            { english: "act", chinese: ["法案，行動"], pos: "n." }
-            { english: "obligation", chinese: ["義務，責任"], pos: "n." }
-            { english: "authorize", chinese: ["批准，授權"], pos: "v." }
-            { english: "prohibit", chinese: ["禁止"], pos: "v." }
-            { english: "abolish", chinese: ["廢除"], pos: "v." }
-            { english: "enforce", chinese: ["執行，實施"], pos: "v." }
-            { english: "habit", chinese: ["習慣"], pos: "n." }
-            { english: "legislation", chinese: ["立法，法律"], pos: "n." }
+            { english: "consultant", chinese: ["顧問"], pos: "n." },
+            { english: "attire", chinese: ["服裝，衣著"], pos: "n." },
+            { english: "code", chinese: ["規範，範例；密碼"], pos: "n." },
+            { english: "concern", chinese: ["擔心，憂慮"], pos: "n." },
+            { english: "policy", chinese: ["政策，規定；保單"], pos: "n." },
+            { english: "comply", chinese: ["遵守，遵從"], pos: "v." },
+            { english: "regulation", chinese: ["規定"], pos: "n." },
+            { english: "exception", chinese: ["例外"], pos: "n." },
+            { english: "adhere", chinese: ["遵守，堅持"], pos: "v." },
+            { english: "severely", chinese: ["嚴厲地，嚴重地"], pos: "adv." },
+            { english: "refrain", chinese: ["克制，抑制"], pos: "v." },
+            { english: "permission", chinese: ["允許，許可"], pos: "n." },
+            { english: "access", chinese: ["使用權，接近；通道"], pos: "n." },
+            { english: "thoroughly", chinese: ["徹底地，完全地，非常"], pos: "adv." },
+            { english: "revise", chinese: ["修訂；變更"], pos: "v." },
+            { english: "approach", chinese: ["接近；處理方法"], pos: "n." },
+            { english: "approval", chinese: ["批准，許可"], pos: "n." },
+            { english: "form", chinese: ["表格，種類，類型"], pos: "n." },
+            { english: "immediately", chinese: ["立即，馬上"], pos: "adv." },
+            { english: "inspection", chinese: ["檢查，視察"], pos: "n." },
+            { english: "arrangement", chinese: ["安排，準備，布置"], pos: "n." },
+            { english: "procedure", chinese: ["手續，程序"], pos: "n." },
+            { english: "negative", chinese: ["負面的，消極的"], pos: "adj." },
+            { english: "mandate", chinese: ["授權，命令"], pos: "n." },
+            { english: "effect", chinese: ["效力，效果，影響"], pos: "n." },
+            { english: "drastically", chinese: ["激烈地，徹底地"], pos: "adv." },
+            { english: "according to", chinese: ["根據~，依照"], pos: "phr." },
+            { english: "enable", chinese: ["使..能夠"], pos: "v." },
+            { english: "standard", chinese: ["標準，規範"], pos: "n." },
+            { english: "constant", chinese: ["持續的，不斷的"], pos: "adj." },
+            { english: "act", chinese: ["法案，行動"], pos: "n." },
+            { english: "obligation", chinese: ["義務，責任"], pos: "n." },
+            { english: "authorize", chinese: ["批准，授權"], pos: "v." },
+            { english: "prohibit", chinese: ["禁止"], pos: "v." },
+            { english: "abolish", chinese: ["廢除"], pos: "v." },
+            { english: "enforce", chinese: ["執行，實施"], pos: "v." },
+            { english: "habit", chinese: ["習慣"], pos: "n." },
+            { english: "legislation", chinese: ["立法，法律"], pos: "n." },
             { english: "restrict", chinese: ["限制，限定"], pos: "v." }
         ];
 
@@ -463,4 +455,3 @@
     </script>
 </body>
 </html>
-
