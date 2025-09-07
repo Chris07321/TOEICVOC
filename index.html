@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#4f46e5"/>
     <link rel="apple-touch-icon" href="icons/icon-192x192.png">
     
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIuenglishqOaWhyDlk4HlrZAgUldBIiwKICAic2hvcnRfbmFtZSI6ICLlk4HlrZAiLAogICJkZXNjcmlwdGlvbiI6ICLkuIDlgLrouqvnnYDkv6HkvY3mg4XlkIjkvobvvIznlLDkvIHkuIbljIXkvJrpopHntrEgQXBwLuS7o+WHu+WPsOe7hOS4gOS4qumZkOWFrOWPuC4iLAogICJzdGFydF91cmwiOiAiL3ZvY2FiLXF1aXotcHdhLyIsCiAgInNjb3BlIjogIi92b2NhYi1xdWl6LXB3YS8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmM2Y0ZjYiLAogICJ0aGVtZV_jb2xvciI6ICIjNGY0NmU1IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbnMvaWNvbi0xOTJ4MTkyLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJpY29ucy9pY29uLTUxMng1MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9Cg==">
+    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIuenglishqOaWhyDlk4HlrZAgUldBIiwKICAic2hvcnRfbmFtZSI6ICLlk4HlrZAiLAogICJkZXNjcmlwdGlvbiI6ICLkuIDlgLrouqvnnYDkv6HkvY3mg4XlkIjkvobvvIznlLDkvIHkuIbljIXkvJrpopHntrEgQXBwLuS7o+WHu+WPsOe7hOS4gOS4qumZkOWFrOWPuC4iLAogICJzdGFydF91cmwiOiAiL3ZvY2FiLXF1aXotcHdhLyIsCiAgInNjb3BlIjogIi92b2NhYi1xdWl6LXB3YS8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmM2Y0ZjYiLAogICJ0aGVtZV9jb2xvciI6ICIjNGY0NmU1IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbnMvaWNvbi0xOTJ4MTkyLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJpY29ucy9pY29uLTUxMng1MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9Cg==">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
@@ -97,10 +97,11 @@
             <h1 class="text-3xl font-bold text-gray-800 mb-2">英文單字測驗</h1>
             <p class="text-gray-500 mb-8">請選擇測驗題庫</p>
             <div id="bank-selection" class="space-y-4">
-                <button onclick="selectBank('bank1')" class="btn btn-bank">多益核心(一)：求職與規範</button>
-                <button onclick="selectBank('bank2')" class="btn btn-bank">多益核心(二)：辦公室溝通</button>
-                <button onclick="selectBank('bank3')" class="btn btn-bank">多益核心(三)：綜合商務</button>
-                <button onclick="selectBank('bank4')" class="btn btn-bank">多益核心(四)：職場實務</button>
+                <button onclick="selectBank('bank1')" class="btn btn-bank">多益核心(一)：求職與規範 (15題)</button>
+                <button onclick="selectBank('bank2')" class="btn btn-bank">多益核心(二)：辦公室溝通 (15題)</button>
+                <button onclick="selectBank('bank3')" class="btn btn-bank">多益核心(三)：綜合商務 (15題)</button>
+                <button onclick="selectBank('bank4')" class="btn btn-bank">多益核心(四)：職場實務 (15題)</button>
+                <button onclick="selectBank('bank5')" class="btn btn-bank">多益核心(五)：進階商務 (15題)</button>
                 <hr class="my-4">
                 <button onclick="selectBank('bank_all')" class="btn btn-bank special">完整題庫 (30題)</button>
             </div>
@@ -151,24 +152,26 @@
         // --- App Logic ---
         const wordBanks = {
             'bank1': [ // 多益核心(一)：求職與規範
-                 { english: "résumé", chinese: ["履歷表"], pos: "n." }, { english: "opening", chinese: ["空缺", "職缺"], pos: "n." }, { english: "applicant", chinese: ["申請者", "應徵者"], pos: "n." }, { english: "requirement", chinese: ["必要條件", "要求"], pos: "n." }, { english: "meet", chinese: ["滿足", "符合"], pos: "v." }, { english: "qualified", chinese: ["有資格的", "勝任的"], pos: "adj." }, { english: "candidate", chinese: ["候選者", "應徵者"], pos: "n." }, { english: "confidence", chinese: ["信心", "自信"], pos: "n." }, { english: "highly", chinese: ["很", "非常"], pos: "adv." }, { english: "professional", chinese: ["專業的", "職業的"], pos: "adj./n." }, { english: "interview", chinese: ["面試"], pos: "n./v." }, { english: "hire", chinese: ["雇用"], pos: "v." }, { english: "training", chinese: ["訓練"], pos: "n." }, { english: "reference", chinese: ["推薦信", "參考"], pos: "n." }, { english: "position", chinese: ["職位", "位置"], pos: "n./v." }, { english: "achievement", chinese: ["成就", "達成"], pos: "n." }, { english: "impressed", chinese: ["感到印象深刻的"], pos: "adj." }, { english: "excellent", chinese: ["優秀的", "傑出的"], pos: "adj." }, { english: "eligible", chinese: ["有資格的", "合適的"], pos: "adj." }, { english: "identify", chinese: ["辨認", "認出"], pos: "v." }, { english: "associate", chinese: ["使有關聯"], pos: "v." }, { english: "condition", chinese: ["條件"], pos: "n." }, { english: "employment", chinese: ["雇用"], pos: "n." }, { english: "lack", chinese: ["缺乏"], pos: "v./n." }, { english: "managerial", chinese: ["管理的"], pos: "adj." }, { english: "diligent", chinese: ["勤奮的"], pos: "adj." }, { english: "familiar", chinese: ["熟悉的", "親近的"], pos: "adj." }, { english: "proficiency", chinese: ["熟練", "精通"], pos: "n." }, { english: "prospective", chinese: ["預期的", "未來的"], pos: "adj." }, { english: "appeal", chinese: ["呼籲", "有吸引力"], pos: "v." }, { english: "specialize", chinese: ["專攻", "專門從事"], pos: "v." }, { english: "apprehensive", chinese: ["擔心的", "憂慮的"], pos: "adj." }, { english: "consultant", chinese: ["顧問"], pos: "n." }, { english: "attire", chinese: ["服裝", "衣著"], pos: "n." }, { english: "code", chinese: ["規範", "密碼"], pos: "n." }, { english: "concern", chinese: ["擔心", "憂慮"], pos: "n." }, { english: "policy", chinese: ["政策", "規定"], pos: "n." }, { english: "comply", chinese: ["遵守", "遵從"], pos: "v." }, { english: "regulation", chinese: ["規定"], pos: "n." }, { english: "exception", chinese: ["例外"], pos: "n." }, { english: "adhere", chinese: ["遵守", "堅持"], pos: "v." }, { english: "severely", chinese: ["嚴厲地", "嚴重地"], pos: "adv." }, { english: "refrain", chinese: ["克制", "抑制"], pos: "v." }, { english: "permission", chinese: ["允許", "許可"], pos: "n." }, { english: "access", chinese: ["使用權", "通道"], pos: "n." },
+                { english: "résumé", chinese: ["履歷表"], pos: "n." }, { english: "opening", chinese: ["空缺", "職缺"], pos: "n." }, { english: "applicant", chinese: ["申請者", "應徵者"], pos: "n." }, { english: "requirement", chinese: ["必要條件", "要求"], pos: "n." }, { english: "meet", chinese: ["滿足", "符合"], pos: "v." }, { english: "qualified", chinese: ["有資格的", "勝任的"], pos: "adj." }, { english: "candidate", chinese: ["候選者", "應徵者"], pos: "n." }, { english: "confidence", chinese: ["信心", "自信"], pos: "n." }, { english: "highly", chinese: ["很", "非常"], pos: "adv." }, { english: "professional", chinese: ["專業的", "職業的"], pos: "adj./n." }, { english: "interview", chinese: ["面試"], pos: "n./v." }, { english: "hire", chinese: ["雇用"], pos: "v." }, { english: "training", chinese: ["訓練"], pos: "n." }, { english: "reference", chinese: ["推薦信", "參考"], pos: "n." }, { english: "position", chinese: ["職位", "位置"], pos: "n./v." }, { english: "achievement", chinese: ["成就", "達成"], pos: "n." }, { english: "impressed", chinese: ["感到印象深刻的"], pos: "adj." }, { english: "excellent", chinese: ["優秀的", "傑出的"], pos: "adj." }, { english: "eligible", chinese: ["有資格的", "合適的"], pos: "adj." }, { english: "identify", chinese: ["辨認", "認出"], pos: "v." }, { english: "associate", chinese: ["使有關聯"], pos: "v." }, { english: "condition", chinese: ["條件"], pos: "n." }, { english: "employment", chinese: ["雇用"], pos: "n." }, { english: "lack", chinese: ["缺乏"], pos: "v./n." }, { english: "managerial", chinese: ["管理的"], pos: "adj." }, { english: "diligent", chinese: ["勤奮的"], pos: "adj." }, { english: "familiar", chinese: ["熟悉的", "親近的"], pos: "adj." }, { english: "proficiency", chinese: ["熟練", "精通"], pos: "n." }, { english: "prospective", chinese: ["預期的", "未來的"], pos: "adj." }, { english: "appeal", chinese: ["呼籲", "有吸引力"], pos: "v." }, { english: "specialize", chinese: ["專攻", "專門從事"], pos: "v." }, { english: "apprehensive", chinese: ["擔心的", "憂慮的"], pos: "adj." }, { english: "consultant", chinese: ["顧問"], pos: "n." }, { english: "attire", chinese: ["服裝", "衣著"], pos: "n." }, { english: "code", chinese: ["規範", "密碼"], pos: "n." }, { english: "concern", chinese: ["擔心", "憂慮"], pos: "n." }, { english: "policy", chinese: ["政策", "規定"], pos: "n." }, { english: "comply", chinese: ["遵守", "遵從"], pos: "v." }, { english: "regulation", chinese: ["規定"], pos: "n." }, { english: "exception", chinese: ["例外"], pos: "n." }, { english: "adhere", chinese: ["遵守", "堅持"], pos: "v." }, { english: "severely", chinese: ["嚴厲地", "嚴重地"], pos: "adv." }, { english: "refrain", chinese: ["克制", "抑制"], pos: "v." }, { english: "permission", chinese: ["允許", "許可"], pos: "n." }, { english: "access", chinese: ["使用權", "通道"], pos: "n." },
             ],
             'bank2': [ // 多益核心(二)：辦公室溝通
-                 { english: "thoroughly", chinese: ["徹底地", "完全地"], pos: "adv." }, { english: "revise", chinese: ["修訂", "變更"], pos: "v." }, { english: "approach", chinese: ["接近", "處理方法"], pos: "n." }, { english: "approval", chinese: ["批准", "許可"], pos: "n." }, { english: "form", chinese: ["表格", "類型"], pos: "n." }, { english: "immediately", chinese: ["立即", "馬上"], pos: "adv." }, { english: "inspection", chinese: ["檢查", "視察"], pos: "n." }, { english: "arrangement", chinese: ["安排", "準備"], pos: "n." }, { english: "procedure", chinese: ["手續", "程序"], pos: "n." }, { english: "negative", chinese: ["負面的", "消極的"], pos: "adj." }, { english: "mandate", chinese: ["授權", "命令"], pos: "n." }, { english: "effect", chinese: ["效力", "影響"], pos: "n." }, { english: "drastically", chinese: ["激烈地", "徹底地"], pos: "adv." }, { english: "according to", chinese: ["根據", "依照"], pos: "phr." }, { english: "enable", chinese: ["使能夠"], pos: "v." }, { english: "standard", chinese: ["標準", "規範"], pos: "n." }, { english: "constant", chinese: ["持續的", "不斷的"], pos: "adj." }, { english: "act", chinese: ["法案", "行動"], pos: "n." }, { english: "obligation", chinese: ["義務", "責任"], pos: "n." }, { english: "authorize", chinese: ["批准", "授權"], pos: "v." }, { english: "prohibit", chinese: ["禁止"], pos: "v." }, { english: "abolish", chinese: ["廢除"], pos: "v." }, { english: "enforce", chinese: ["執行", "實施"], pos: "v." }, { english: "habit", chinese: ["習慣"], pos: "n." }, { english: "legislation", chinese: ["立法", "法律"], pos: "n." }, { english: "restrict", chinese: ["限制", "限定"], pos: "v." }, { english: "accustomed", chinese: ["習慣的"], pos: "adj." }, { english: "corporation", chinese: ["公司", "法人"], pos: "n." }, { english: "demanding", chinese: ["要求多的", "吃力的"], pos: "adj." }, { english: "colleague", chinese: ["同事"], pos: "n." }, { english: "division", chinese: ["部門"], pos: "n." }, { english: "request", chinese: ["要求"], pos: "n." }, { english: "efficiently", chinese: ["有效率地"], pos: "adv." }, { english: "manage", chinese: ["經營", "管理"], pos: "v." }, { english: "submit", chinese: ["提交"], pos: "v." }, { english: "directly", chinese: ["直接地"], pos: "adv." }, { english: "remind", chinese: ["提醒", "使想起"], pos: "v." }, { english: "instruct", chinese: ["指示", "指導"], pos: "v." }, { english: "deadline", chinese: ["最後期限"], pos: "n." }, { english: "sample", chinese: ["樣本", "樣品"], pos: "n." },
+                { english: "thoroughly", chinese: ["徹底地", "完全地"], pos: "adv." }, { english: "revise", chinese: ["修訂", "變更"], pos: "v." }, { english: "approach", chinese: ["接近", "處理方法"], pos: "n." }, { english: "approval", chinese: ["批准", "許可"], pos: "n." }, { english: "form", chinese: ["表格", "類型"], pos: "n." }, { english: "immediately", chinese: ["立即", "馬上"], pos: "adv." }, { english: "inspection", chinese: ["檢查", "視察"], pos: "n." }, { english: "arrangement", chinese: ["安排", "準備"], pos: "n." }, { english: "procedure", chinese: ["手續", "程序"], pos: "n." }, { english: "negative", chinese: ["負面的", "消極的"], pos: "adj." }, { english: "mandate", chinese: ["授權", "命令"], pos: "n." }, { english: "effect", chinese: ["效力", "影響"], pos: "n." }, { english: "drastically", chinese: ["激烈地", "徹底地"], pos: "adv." }, { english: "according to", chinese: ["根據", "依照"], pos: "phr." }, { english: "enable", chinese: ["使能夠"], pos: "v." }, { english: "standard", chinese: ["標準", "規範"], pos: "n." }, { english: "constant", chinese: ["持續的", "不斷的"], pos: "adj." }, { english: "act", chinese: ["法案", "行動"], pos: "n." }, { english: "obligation", chinese: ["義務", "責任"], pos: "n." }, { english: "authorize", chinese: ["批准", "授權"], pos: "v." }, { english: "prohibit", chinese: ["禁止"], pos: "v." }, { english: "abolish", chinese: ["廢除"], pos: "v." }, { english: "enforce", chinese: ["執行", "實施"], pos: "v." }, { english: "habit", chinese: ["習慣"], pos: "n." }, { english: "legislation", chinese: ["立法", "法律"], pos: "n." }, { english: "restrict", chinese: ["限制", "限定"], pos: "v." }, { english: "accustomed", chinese: ["習慣的"], pos: "adj." }, { english: "corporation", chinese: ["公司", "法人"], pos: "n." }, { english: "demanding", chinese: ["要求多的", "吃力的"], pos: "adj." }, { english: "colleague", chinese: ["同事"], pos: "n." }, { english: "division", chinese: ["部門"], pos: "n." }, { english: "request", chinese: ["要求"], pos: "n." }, { english: "efficiently", chinese: ["有效率地"], pos: "adv." }, { english: "manage", chinese: ["經營", "管理"], pos: "v." }, { english: "submit", chinese: ["提交"], pos: "v." }, { english: "directly", chinese: ["直接地"], pos: "adv." }, { english: "remind", chinese: ["提醒", "使想起"], pos: "v." }, { english: "instruct", chinese: ["指示", "指導"], pos: "v." }, { english: "deadline", chinese: ["最後期限"], pos: "n." }, { english: "sample", chinese: ["樣本", "樣品"], pos: "n." },
             ],
             'bank3': [ // 多益核心(三)：綜合商務
-                 { english: "notify", chinese: ["通知", "告知"], pos: "v." }, { english: "perform", chinese: ["執行", "表演"], pos: "v." }, { english: "monitor", chinese: ["監視", "監控"], pos: "v./n." }, { english: "deserve", chinese: ["值得"], pos: "v." }, { english: "assignment", chinese: ["工作", "任務"], pos: "n." }, { english: "entire", chinese: ["整個的"], pos: "adj." }, { english: "release", chinese: ["發表", "發行"], pos: "v./n." }, { english: "extension", chinese: ["延長", "分機"], pos: "n." }, { english: "electronically", chinese: ["以電子方式地"], pos: "adv." }, { english: "attendance", chinese: ["出席", "出勤"], pos: "n." }, { english: "absolutely", chinese: ["絕對地", "完全地"], pos: "adv." }, { english: "delegate", chinese: ["委派", "代表"], pos: "v./n." }, { english: "attentively", chinese: ["專心地"], pos: "adv." }, { english: "supervision", chinese: ["監督"], pos: "n." }, { english: "workshop", chinese: ["工作坊", "研討會"], pos: "n." }, { english: "draw", chinese: ["拉", "吸引"], pos: "v." }, { english: "revision", chinese: ["修訂"], pos: "n." }, { english: "reluctantly", chinese: ["不情願地", "勉強地"], pos: "adv." }, { english: "acquaint", chinese: ["使熟悉"], pos: "v." }, { english: "convey", chinese: ["傳達"], pos: "v." }, { english: "check", chinese: ["檢查", "確認"], pos: "v." }, { english: "headquarters", chinese: ["總部"], pos: "n." }, { english: "file", chinese: ["歸檔", "檔案"], pos: "v./n." }, { english: "oversee", chinese: ["監督"], pos: "v." }, { english: "involved", chinese: ["有關的", "牽涉在內的"], pos: "adj." }, { english: "concentrate", chinese: ["集中", "專注"], pos: "v." },
+                { english: "notify", chinese: ["通知", "告知"], pos: "v." }, { english: "perform", chinese: ["執行", "表演"], pos: "v." }, { english: "monitor", chinese: ["監視", "監控"], pos: "v./n." }, { english: "deserve", chinese: ["值得"], pos: "v." }, { english: "assignment", chinese: ["工作", "任務"], pos: "n." }, { english: "entire", chinese: ["整個的"], pos: "adj." }, { english: "release", chinese: ["發表", "發行"], pos: "v./n." }, { english: "extension", chinese: ["延長", "分機"], pos: "n." }, { english: "electronically", chinese: ["以電子方式地"], pos: "adv." }, { english: "attendance", chinese: ["出席", "出勤"], pos: "n." }, { english: "absolutely", chinese: ["絕對地", "完全地"], pos: "adv." }, { english: "delegate", chinese: ["委派", "代表"], pos: "v./n." }, { english: "attentively", chinese: ["專心地"], pos: "adv." }, { english: "supervision", chinese: ["監督"], pos: "n." }, { english: "workshop", chinese: ["工作坊", "研討會"], pos: "n." }, { english: "draw", chinese: ["拉", "吸引"], pos: "v." }, { english: "revision", chinese: ["修訂"], pos: "n." }, { english: "reluctantly", chinese: ["不情願地", "勉強地"], pos: "adv." }, { english: "acquaint", chinese: ["使熟悉"], pos: "v." }, { english: "convey", chinese: ["傳達"], pos: "v." }, { english: "check", chinese: ["檢查", "確認"], pos: "v." }, { english: "headquarters", chinese: ["總部"], pos: "n." }, { english: "file", chinese: ["歸檔", "檔案"], pos: "v./n." }, { english: "oversee", chinese: ["監督"], pos: "v." }, { english: "involved", chinese: ["有關的", "牽涉在內的"], pos: "adj." }, { english: "concentrate", chinese: ["集中", "專注"], pos: "v." },
             ],
-            'bank4': [ // 多益核心(四)：職場實務 (New Bank)
+            'bank4': [ // 多益核心(四)：職場實務
                 { english: "lax", chinese: ["鬆懈的"], pos: "adj." }, { english: "procrastinate", chinese: ["拖延"], pos: "v." }, { english: "combined", chinese: ["聯合的", "結合的"], pos: "adj." }, { english: "accomplish", chinese: ["達成"], pos: "v." }, { english: "voluntarily", chinese: ["自願地"], pos: "adv." }, { english: "undertake", chinese: ["從事", "承擔"], pos: "v." }, { english: "assume", chinese: ["假定", "承擔"], pos: "v." }, { english: "occasionally", chinese: ["偶爾"], pos: "adv." }, { english: "employee", chinese: ["員工", "受雇者"], pos: "n." }, { english: "assist", chinese: ["協助", "援助"], pos: "v." }, { english: "satisfied", chinese: ["感到滿意的"], pos: "adj." }, { english: "manner", chinese: ["方式", "態度"], pos: "n." }, { english: "responsible", chinese: ["負責任的"], pos: "adj." }, { english: "conduct", chinese: ["進行"], pos: "v." }, { english: "adjust", chinese: ["調整", "適應"], pos: "v." }, { english: "personnel", chinese: ["員工", "人事部門"], pos: "n." }, { english: "agree", chinese: ["同意"], pos: "v." }, { english: "supervise", chinese: ["監督", "指導"], pos: "v." }, { english: "coworker", chinese: ["同事"], pos: "n." }, { english: "direct", chinese: ["引導", "指揮"], pos: "v." }, { english: "confidential", chinese: ["機密的"], pos: "adj." }, { english: "assign", chinese: ["分配", "指派"], pos: "v." }, { english: "leading", chinese: ["領導的", "領先的"], pos: "adj." }, { english: "formal", chinese: ["正式的"], pos: "adj." }, { english: "remove", chinese: ["移除"], pos: "v." }, { english: "collect", chinese: ["收集"], pos: "v." }, { english: "coordinate", chinese: ["協調"], pos: "v." }, { english: "hardly", chinese: ["幾乎不"], pos: "adv." }, { english: "abstract", chinese: ["抽象的"], pos: "adj." }, { english: "directory", chinese: ["通訊錄"], pos: "n." }, { english: "accountable", chinese: ["應負責任的"], pos: "adj." }, { english: "skillfully", chinese: ["巧妙地", "熟練地"], pos: "adv." }, { english: "exclusive", chinese: ["獨有的", "排外的"], pos: "adj." }, { english: "intention", chinese: ["意圖", "意向"], pos: "n." }, { english: "transform", chinese: ["改變", "轉變"], pos: "v." }, { english: "respectful", chinese: ["尊重的"], pos: "adj." }, { english: "duplicate", chinese: ["副本"], pos: "n." }, { english: "contrary", chinese: ["相反"], pos: "n." }, { english: "disturbing", chinese: ["令人焦慮的"], pos: "adj." }, { english: "engage", chinese: ["參加", "參與"], pos: "v." }, { english: "foster", chinese: ["促進", "培養"], pos: "v." }, { english: "neutrality", chinese: ["中立"], pos: "n." }, { english: "widely", chinese: ["廣泛地"], pos: "adv." }, { english: "externally", chinese: ["外部地"], pos: "adv." },
+            ],
+            'bank5': [ // 多益核心(五)：進階商務
+                { english: "sophisticated", chinese: ["精密的", "高雅的"], pos: "adj." }, { english: "timely", chinese: ["及時的", "適時的"], pos: "adj." }, { english: "realistically", chinese: ["實際上", "實事求是地"], pos: "adv." }, { english: "promptly", chinese: ["迅速地", "準時地"], pos: "adv." }, { english: "accessible", chinese: ["可進入的", "可利用的"], pos: "adj." }, { english: "implement", chinese: ["實施", "執行"], pos: "v." }, { english: "feedback", chinese: ["回饋意見", "反響"], pos: "n." }, { english: "outstanding", chinese: ["傑出的", "未償付的"], pos: "adj." }, { english: "inform", chinese: ["通知"], pos: "v." }, { english: "replacement", chinese: ["代替", "替代物"], pos: "n." }, { english: "announcement", chinese: ["公告", "宣布"], pos: "n." }, { english: "department", chinese: ["部門"], pos: "n." }, { english: "permanently", chinese: ["永久地"], pos: "adv." }, { english: "fulfill", chinese: ["滿足", "履行"], pos: "v." }, { english: "outline", chinese: ["概要", "大綱"], pos: "n." }, { english: "explain", chinese: ["說明"], pos: "v." }, { english: "contain", chinese: ["包容", "容納"], pos: "v." }, { english: "compile", chinese: ["彙整", "收集"], pos: "v." }, { english: "subsequent", chinese: ["後來的", "隨後的"], pos: "adj." }, { english: "overview", chinese: ["概要", "概觀"], pos: "n." }, { english: "provider", chinese: ["供應商", "提供者"], pos: "n." }, { english: "matter", chinese: ["問題", "事情"], pos: "n." }, { english: "expertise", chinese: ["專門知識", "專業技術"], pos: "n." }, { english: "demonstrate", chinese: ["證明", "示範操作"], pos: "v." }, { english: "remainder", chinese: ["剩餘"], pos: "n." }, { english: "essential", chinese: ["必要的", "本質上的"], pos: "adj." }, { english: "divide", chinese: ["劃分", "分開"], pos: "v." }, { english: "major", chinese: ["主要的", "重大的"], pos: "adj." }, { english: "compliance", chinese: ["遵守"], pos: "n." }, { english: "clarify", chinese: ["闡明", "解釋"], pos: "v." }, { english: "face", chinese: ["面對"], pos: "v." }, { english: "follow", chinese: ["跟隨", "密切注意"], pos: "v." }, { english: "aspect", chinese: ["觀點", "方面"], pos: "n." }, { english: "apparently", chinese: ["顯然", "看來"], pos: "adv." }, { english: "aware", chinese: ["知道的", "意識到的"], pos: "adj." }, { english: "extended", chinese: ["延長的", "延伸的"], pos: "adj." }, { english: "accidentally", chinese: ["意外地", "偶然地"], pos: "adv." }, { english: "advisable", chinese: ["可取的", "明智的"], pos: "adj." }, { english: "speak", chinese: ["講話"], pos: "v." },
             ]
         };
         
-        // Create the combined bank from all individual banks
-        wordBanks.bank_all = [...wordBanks.bank1, ...wordBanks.bank2, ...wordBanks.bank3, ...wordBanks.bank4];
+        wordBanks.bank_all = [...wordBanks.bank1, ...wordBanks.bank2, ...wordBanks.bank3, ...wordBanks.bank4, ...wordBanks.bank5];
 
+        // DOM Elements
         const homeScreen = document.getElementById('home-screen');
-        const bankSelection = document.getElementById('bank-selection');
         const modeSelection = document.getElementById('mode-selection');
         const quizScreen = document.getElementById('quiz-screen');
         const resultsScreen = document.getElementById('results-screen');
@@ -184,16 +187,15 @@
         const nextBtn = document.getElementById('next-btn');
         const finalScore = document.getElementById('final-score');
 
+        // State Variables
         let currentQuiz = [];
         let currentQuestionIndex = 0;
         let score = 0;
         let quizMode = '';
         let selectedBank = '';
-        let quizLength = 15; // Default length for sub-banks
+        let quizLength = 0;
         
-        // --- NEW: Wrong Answer Review System ---
-        // This array will store questions the user gets wrong.
-        // For persistence across sessions, you could use localStorage.
+        // Wrong Answer Review System
         let wrongAnswersReviewPool = [];
 
         function shuffle(array) {
@@ -218,35 +220,29 @@
             currentQuestionIndex = 0;
             score = 0;
             
-            // Set quiz length based on the selected bank
-            quizLength = (selectedBank === 'bank_all') ? 30 : 15;
-
-            // --- Logic for Wrong Answer Injection ---
+            const baseLength = (selectedBank === 'bank_all') ? 30 : 15;
+            
+            // --- Upgraded Wrong Answer Injection Logic ---
             const mainVocabulary = [...wordBanks[selectedBank]];
-            shuffle(mainVocabulary);
             shuffle(wrongAnswersReviewPool);
 
-            const reviewRatio = 0.25; // 25% of questions will be from the wrong answer pool, if available
-            const numReviewQuestions = Math.min(wrongAnswersReviewPool.length, Math.floor(quizLength * reviewRatio));
-            const reviewQuestions = wrongAnswersReviewPool.slice(0, numReviewQuestions);
+            const numReviewQuestions = Math.min(5, wrongAnswersReviewPool.length);
+            quizLength = baseLength + numReviewQuestions; // Total length is base + review questions
             
-            const numNewQuestions = quizLength - numReviewQuestions;
+            // Get review questions and flag them
+            const reviewQuestions = wrongAnswersReviewPool
+                .slice(0, numReviewQuestions)
+                .map(q => ({ ...q, isReview: true }));
             
             // Filter out review questions from the main pool to avoid duplicates
             const newQuestionsPool = mainVocabulary.filter(word => 
                 !reviewQuestions.some(reviewWord => reviewWord.english === word.english)
             );
 
-            const newQuestions = newQuestionsPool.slice(0, numNewQuestions);
+            const newQuestions = shuffle(newQuestionsPool).slice(0, baseLength);
 
             // Combine and shuffle the final quiz
             currentQuiz = shuffle([...reviewQuestions, ...newQuestions]);
-            
-            // Ensure the quiz has the correct length, even if there are overlaps
-            if(currentQuiz.length < quizLength) {
-                const needed = quizLength - currentQuiz.length;
-                currentQuiz.push(...newQuestionsPool.slice(numNewQuestions, numNewQuestions + needed));
-            }
             
             homeScreen.classList.add('hidden');
             resultsScreen.classList.add('hidden');
@@ -261,10 +257,15 @@
                 return;
             }
             const question = currentQuiz[currentQuestionIndex];
-            progressText.textContent = `問題 ${currentQuestionIndex + 1} / ${quizLength}`;
+            
+            // Display progress with review tag if applicable
+            const isReview = question.isReview;
+            progressText.innerHTML = `問題 ${currentQuestionIndex + 1} / ${quizLength} ${isReview ? '<span class="text-amber-500 font-bold ml-2">(錯題複習)</span>' : ''}`;
+
             scoreText.textContent = `分數: ${score}`;
             questionWord.textContent = question.english;
             partOfSpeech.textContent = question.pos;
+
             if (quizMode === 'multiple-choice') {
                 fillInTheBlankInput.classList.add('hidden');
                 multipleChoiceOptions.classList.remove('hidden');
@@ -275,13 +276,14 @@
             }
         }
         
-        // --- NEW: Adds a question to the review pool if answered incorrectly ---
         function addWrongAnswerToPool() {
             const question = currentQuiz[currentQuestionIndex];
-            // Avoid duplicates in the review pool
-            if (!wrongAnswersReviewPool.some(w => w.english === question.english)) {
-                wrongAnswersReviewPool.push(question);
-                console.log("Added to review pool:", question.english);
+            // Remove the 'isReview' flag before adding to the pool
+            const originalQuestion = { ...question };
+            delete originalQuestion.isReview;
+            
+            if (!wrongAnswersReviewPool.some(w => w.english === originalQuestion.english)) {
+                wrongAnswersReviewPool.push(originalQuestion);
             }
         }
 
@@ -319,30 +321,37 @@
                 multipleChoiceOptions.appendChild(button);
             });
         }
+        
+        function handleAnswer(isCorrect, correctAnswerText = '') {
+            if (isCorrect) {
+                score++;
+                feedbackMessage.textContent = '答對了！';
+                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-green-600';
+            } else {
+                feedbackMessage.textContent = `答錯了！答案是: ${correctAnswerText}`;
+                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-red-600';
+                addWrongAnswerToPool();
+            }
+            scoreText.textContent = `分數: ${score}`;
+            nextBtn.classList.remove('hidden');
+        }
 
         function checkMultipleChoiceAnswer(selectedAnswerText, correctQuestion, button) {
             const buttons = multipleChoiceOptions.querySelectorAll('button');
             buttons.forEach(btn => btn.disabled = true);
             
             const correctAnswerText = correctQuestion.chinese.join(' / ');
-            if (selectedAnswerText === correctAnswerText) {
-                score++;
+            const isCorrect = (selectedAnswerText === correctAnswerText);
+            
+            if (isCorrect) {
                 button.classList.add('correct');
-                feedbackMessage.textContent = '答對了！';
-                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-green-600';
             } else {
                 button.classList.add('incorrect');
-                feedbackMessage.textContent = `答錯了！答案是: ${correctAnswerText}`;
-                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-red-600';
                 buttons.forEach(btn => {
-                    if (btn.textContent === correctAnswerText) {
-                        btn.classList.add('correct');
-                    }
+                    if (btn.textContent === correctAnswerText) btn.classList.add('correct');
                 });
-                addWrongAnswerToPool(); // Add to review pool
             }
-            scoreText.textContent = `分數: ${score}`;
-            nextBtn.classList.remove('hidden');
+            handleAnswer(isCorrect, correctAnswerText);
         }
         
         function checkFillInAnswer() {
@@ -355,25 +364,14 @@
             
             submitFillInBtn.disabled = true;
             answerInput.disabled = true;
+            answerInput.classList.add(isCorrect ? 'correct' : 'incorrect');
 
-            if (isCorrect) {
-                score++;
-                answerInput.classList.add('correct');
-                feedbackMessage.textContent = '答對了！';
-                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-green-600';
-            } else {
-                answerInput.classList.add('incorrect');
-                feedbackMessage.textContent = `答錯了！答案是: ${correctAnswers.join(' / ')}`;
-                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-red-600';
-                addWrongAnswerToPool(); // Add to review pool
-            }
-            scoreText.textContent = `分數: ${score}`;
-            nextBtn.classList.remove('hidden');
+            handleAnswer(isCorrect, correctAnswers.join(' / '));
         }
 
         submitFillInBtn.onclick = checkFillInAnswer;
         answerInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter') {
+            if (event.key === 'Enter' && !submitFillInBtn.disabled) {
                 event.preventDefault(); 
                 checkFillInAnswer();
             }
@@ -415,20 +413,23 @@
         // --- PWA Service Worker Registration ---
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
+                // Define the scope path here, outside of the template literal
+                const SCOPE_PATH = '/vocab-quiz-pwa/';
                 const swCode = `
-                    const SCOPE_PATH = '/vocab-quiz-pwa/';
-                    const CACHE_NAME = 'vocab-quiz-pwa-v4'; // Updated version
+                    const CACHE_NAME = 'vocab-quiz-pwa-v5';
+                    // These variables are now hardcoded with the value from the outer scope
                     const urlsToCache = [
-                        SCOPE_PATH,
+                        '${SCOPE_PATH}',
                         '${SCOPE_PATH}index.html',
                         '${SCOPE_PATH}icons/icon-192x192.png',
                         '${SCOPE_PATH}icons/icon-512x512.png'
                     ];
+
                     self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(urlsToCache))));
                     self.addEventListener('activate', e => e.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE_NAME ? caches.delete(k) : null))).then(() => self.clients.claim())));
                     self.addEventListener('fetch', e => {
                         if (e.request.mode === 'navigate') {
-                            e.respondWith(caches.match(e.request).then(res => res || fetch(e.request).catch(() => caches.match(SCOPE_PATH + 'index.html'))));
+                            e.respondWith(caches.match(e.request).then(res => res || fetch(e.request).catch(() => caches.match('${SCOPE_PATH}index.html'))));
                             return;
                         }
                         e.respondWith(caches.match(e.request).then(res => res || fetch(e.request)));
@@ -437,12 +438,11 @@
                 const blob = new Blob([swCode], { type: 'application/javascript' });
                 const swUrl = URL.createObjectURL(blob);
                 navigator.serviceWorker.register(swUrl)
-                    .then(reg => console.log('ServiceWorker registration successful with scope: ', reg.scope))
+                    .then(reg => console.log('ServiceWorker registration successful.'))
                     .catch(err => console.log('ServiceWorker registration failed: ', err));
             }
         }
         
-        // --- INITIALIZATION ---
         document.addEventListener('DOMContentLoaded', () => {
             registerServiceWorker();
         });
@@ -450,3 +450,4 @@
     </script>
 </body>
 </html>
+
