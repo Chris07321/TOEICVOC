@@ -2,464 +2,780 @@
 <html lang="zh-Hant">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>英文單字測驗 App (附錯題複習)</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>英文單字大挑戰</title>
 
-    <meta name="theme-color" content="#4f46e5"/>
-    <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+    <meta name="theme-color" content="#58cc02"/>
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="icon" type="image/png" href="icon.png">
+    <link rel="manifest" href="manifest.json">
     
-    <link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIuenglishqOaWhyDlk4HlrZAgUldBIiwKICAic2hvcnRfbmFtZSI6ICLlk4HlrZAiLAogICJkZXNjcmlwdGlvbiI6ICLkuIDlgLrouqvnnYDkv6HkvY3mg4XlkIjkvobvvIznlLDkvIHkuIbljIXkvJrpopHntrEgQXBwLuS7o+WHu+WPsOe7hOS4gOS4qumZkOWFrOWPuC4iLAogICJzdGFydF91cmwiOiAiL3ZvY2FiLXF1aXotcHdhLyIsCiAgInNjb3BlIjogIi92b2NhYi1xdWl6LXB3YS8iLAogICJkaXNwbGF5IjogInN0YW5kYWxvbmUiLAogICJiYWNrZ3JvdW5kX2NvbG9yIjogIiNmM2Y0ZjYiLAogICJ0aGVtZV9jb2xvciI6ICIjNGY0NmU1IiwKICAiaWNvbnMiOiBbCiAgICB7CiAgICAgICJzcmMiOiAiaWNvbnMvaWNvbi0xOTJ4MTkyLnBuZyIsCiAgICAgICJzaXplcyI6ICIxOTJ4MTkyIiwKICAgICAgInR5cGUiOiAiaW1hZ2UvcG5nIgogICAgfSwKICAgIHsKICAgICAgInNyYyI6ICJpY29ucy9pY29uLTUxMng1MTIucG5nIiwKICAgICAgInNpemVzIjogIjUxMng1MTIiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9Cg==">
-
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+    
     <style>
         body {
-            font-family: 'Inter', 'Noto Sans TC', sans-serif;
-        }
-        .card {
-            background-color: white;
-            border-radius: 1.5rem;
-            padding: 2rem;
-            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
-            transition: all 0.3s ease-in-out;
-        }
-        .btn {
-            display: block;
-            width: 100%;
-            padding: 1rem;
-            border-radius: 0.75rem;
-            font-weight: 600;
-            text-align: center;
-            transition: all 0.2s ease-in-out;
-            cursor: pointer;
-            border: none;
-        }
-        .btn-primary {
-            background-color: #4f46e5;
-            color: white;
-        }
-        .btn-primary:hover {
-            background-color: #4338ca;
-        }
-        .btn-secondary {
-            background-color: #e5e7eb;
-            color: #374151;
-        }
-        .btn-secondary:hover {
-            background-color: #d1d5db;
-        }
-        .btn-bank {
+            font-family: 'Nunito', 'Noto Sans TC', sans-serif;
             background-color: #ffffff;
-            color: #374151;
+            /* 隱藏捲軸但保留功能 */
+            scrollbar-width: none; 
+            -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar { display: none; }
+
+        /* --- 按鈕與卡片樣式 --- */
+        .btn-game {
+            transition: all 0.1s;
+            border-bottom-width: 4px;
+            border-radius: 1rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+        .btn-game:active {
+            transform: translateY(4px);
+            border-bottom-width: 0px;
+            margin-bottom: 4px;
+            margin-top: 4px;
+        }
+
+        /* 顏色定義 */
+        .btn-primary { background-color: #58cc02; border-color: #46a302; color: white; }
+        .btn-primary:hover { background-color: #46a302; }
+        .btn-secondary { background-color: #e5e7eb; border-color: #d1d5db; color: #4b5563; }
+        .btn-secondary:hover { background-color: #d1d5db; }
+        .btn-danger { background-color: #ff4b4b; border-color: #d42c2c; color: white; }
+        .btn-yellow { background-color: #facc15; border-color: #eab308; color: #713f12; }
+        .btn-yellow:hover { background-color: #eab308; }
+
+        /* 選項卡片 */
+        .option-card {
+            background-color: white;
             border: 2px solid #e5e7eb;
+            border-bottom-width: 4px;
+            border-radius: 1rem;
+            color: #4b5563;
+            font-size: 1.1rem;
+            transition: all 0.1s;
+            cursor: pointer;
+            text-align: center;
+            padding: 1rem;
+            font-weight: 700;
         }
-        .btn-bank:hover {
-            background-color: #f3f4f6;
-            border-color: #d1d5db;
+        .option-card:hover:not(:disabled) { background-color: #f3f4f6; }
+        .option-card:active:not(:disabled) {
+            transform: translateY(4px);
+            border-bottom-width: 0px;
+            margin-top: 4px; 
         }
-        .btn-bank.special {
-             background-color: #fefce8; /* Light yellow */
-             border-color: #facc15; /* Yellow */
+        .option-card.selected { border-color: #3b82f6; background-color: #eff6ff; color: #1d4ed8; }
+        .option-card.correct { background-color: #dcfce7 !important; border-color: #58cc02 !important; color: #15803d !important; }
+        .option-card.incorrect { background-color: #fee2e2 !important; border-color: #ff4b4b !important; color: #b91c1c !important; }
+
+        /* --- 首頁樣式 --- */
+        .home-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem;
         }
-        .btn-bank.special:hover {
-             background-color: #fef9c3;
-             border-color: #eab308;
+
+        .trophy-btn {
+            background: white;
+            border: 2px solid #facc15;
+            border-bottom-width: 4px;
+            border-radius: 50%;
+            width: 3.5rem;
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.1s;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .option-btn {
-            background-color: #f3f4f6;
-            color: #1f2937;
+        .trophy-btn:active {
+            transform: translateY(4px);
+            border-bottom-width: 0px;
+            margin-top: 4px;
+        }
+
+        .badge-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: #ef4444;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: 800;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* 題庫 Grid */
+        .bank-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+        }
+        .bank-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem 1rem;
+            background-color: white;
             border: 2px solid #e5e7eb;
+            border-bottom-width: 4px;
+            border-radius: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            height: 100%;
+            position: relative;
         }
-        .option-btn:hover:not(:disabled) {
-            background-color: #e5e7eb;
-            border-color: #d1d5db;
+        .bank-btn:hover { border-color: #3b82f6; transform: translateY(-2px); }
+        .bank-btn:active { transform: translateY(2px); border-bottom-width: 0px; }
+        .bank-badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #facc15;
+            border: 2px solid white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        .option-btn:disabled {
-            cursor: not-allowed;
+
+        /* 成就列表樣式 */
+        .achievement-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 1rem;
+            margin-bottom: 0.75rem;
+            background: white;
+            opacity: 0.6;
+            filter: grayscale(1);
+            transition: all 0.3s;
         }
-        .correct {
-            background-color: #dcfce7 !important;
-            border-color: #22c55e !important;
-            color: #166534 !important;
+        .achievement-item.unlocked {
+            opacity: 1;
+            filter: grayscale(0);
+            border-color: #facc15;
+            background: #fefce8;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
         }
-        .incorrect {
-            background-color: #fee2e2 !important;
-            border-color: #ef4444 !important;
-            color: #991b1b !important;
+        
+        /* 彈出 Toast 動畫 */
+        @keyframes slideInUp {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
+        }
+        .toast-enter {
+            animation: slideInUp 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
     </style>
 </head>
-<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+<body class="flex flex-col min-h-screen bg-gray-50">
 
-    <div id="app-container" class="w-full max-w-lg mx-auto">
-
-        <div id="home-screen" class="card text-center">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">英文單字測驗</h1>
-            <p class="text-gray-500 mb-8">請選擇測驗題庫</p>
-            <div id="bank-selection" class="space-y-4">
-                <button onclick="selectBank('bank1')" class="btn btn-bank">多益核心(一)：求職與規範 (15題)</button>
-                <button onclick="selectBank('bank2')" class="btn btn-bank">多益核心(二)：辦公室溝通 (15題)</button>
-                <button onclick="selectBank('bank3')" class="btn btn-bank">多益核心(三)：綜合商務 (15題)</button>
-                <button onclick="selectBank('bank4')" class="btn btn-bank">多益核心(四)：職場實務 (15題)</button>
-                <button onclick="selectBank('bank5')" class="btn btn-bank">多益核心(五)：進階商務 (15題)</button>
-                <button onclick="selectBank('bank6')" class="btn btn-bank">多益核心(六)：藝文與活動 (15題)</button>
-                <button onclick="selectBank('bank7')" class="btn btn-bank">多益核心(七)：市場與行銷 (15題)</button>
-                <button onclick="selectBank('bank8')" class="btn btn-bank">多益核心(八)：商業與經濟 (15題)</button>
-                <hr class="my-4">
-                <button onclick="selectBank('bank_all')" class="btn btn-bank special">完整題庫 (30題)</button>
-            </div>
-            <div id="mode-selection" class="mt-8 space-y-4 hidden">
-                 <p class="text-gray-500">請選擇測驗模式</p>
-                <button onclick="startQuiz('multiple-choice')" class="btn btn-primary">選擇題模式</button>
-                <button onclick="startQuiz('fill-in-the-blank')" class="btn btn-primary">英翻中模式</button>
-            </div>
+    <div id="quiz-header" class="hidden w-full max-w-2xl mx-auto p-4 flex items-center justify-between gap-4 sticky top-0 bg-gray-50 z-10">
+        <button onclick="goToMenu()" class="text-gray-400 hover:text-gray-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+        <div class="w-full h-4 bg-gray-200 rounded-full overflow-hidden">
+            <div id="progress-bar" class="h-full bg-green-500 rounded-full transition-all duration-500" style="width: 0%"></div>
         </div>
+        <div class="flex items-center text-orange-500 font-bold text-lg">
+            <span id="score-display">0</span>
+        </div>
+    </div>
 
-        <div id="quiz-screen" class="card hidden">
-            <div class="flex justify-between items-center mb-6">
-                <p id="progress-text" class="text-sm font-medium text-gray-500"></p>
-                <p id="score-text" class="text-sm font-medium text-gray-500">分數: 0</p>
+    <div id="app-container" class="w-full max-w-2xl mx-auto flex-grow flex flex-col p-4 pb-32">
+
+        <div id="home-screen" class="flex-grow flex flex-col items-center animate-fade-in w-full">
+            
+            <div class="home-header">
+                <div>
+                    <h1 class="text-3xl font-extrabold text-gray-700 tracking-tight">單字大挑戰</h1>
+                    <p class="text-gray-400 font-bold text-sm">今天想學點什麼？</p>
+                </div>
+                <button onclick="openAchievements()" class="trophy-btn group hover:bg-yellow-50">
+                    🏆
+                    <div id="ach-badge" class="badge-count hidden">0</div>
+                </button>
             </div>
             
-            <div class="text-center mb-8">
-                <h2 id="question-word" class="text-5xl font-bold text-indigo-600 mb-2" lang="en"></h2>
-                <p id="part-of-speech" class="text-gray-500"></p>
-            </div>
-
-            <div id="multiple-choice-options" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-            </div>
-
-            <div id="fill-in-the-blank-input" class="mb-6 hidden">
-                <input type="text" id="answer-input" placeholder="請輸入中文意思..." class="w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition">
-                <button id="submit-fill-in" class="btn btn-primary mt-4">送出答案</button>
-            </div>
-
-            <div id="feedback-message" class="text-center font-bold my-4 h-6"></div>
-
-            <button id="next-btn" class="btn btn-secondary hidden">下一題</button>
+            <div id="bank-selection" class="bank-grid w-full mb-8">
+                </div>
         </div>
 
-        <div id="results-screen" class="card hidden text-center">
-            <h2 class="text-3xl font-bold text-gray-800 mb-2">測驗結束！</h2>
-            <p class="text-gray-600 mb-6">您的最終成績是：</p>
-            <p id="final-score" class="text-6xl font-bold text-indigo-600 mb-8"></p>
-            <div class="space-y-4">
-                <button onclick="restartQuiz()" class="btn btn-primary">再玩一次</button>
-                <button onclick="goToMenu()" class="btn btn-secondary">返回主選單</button>
+        <div id="achievement-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-end md:items-center justify-center">
+            <div class="bg-white rounded-t-3xl md:rounded-3xl p-6 w-full max-w-md h-[80vh] md:h-auto md:max-h-[80vh] flex flex-col shadow-2xl transform transition-transform">
+                <div class="flex justify-between items-center mb-6">
+                    <h3 class="text-2xl font-extrabold text-gray-800">成就列表</h3>
+                    <button onclick="closeAchievements()" class="text-gray-400 hover:text-gray-600 bg-gray-100 rounded-full p-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>
+                </div>
+                <div id="achievements-list" class="overflow-y-auto flex-grow pr-2">
+                    </div>
+            </div>
+        </div>
+
+        <div id="mode-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+            <div class="bg-white rounded-3xl p-6 w-full max-w-sm text-center shadow-2xl">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">選擇挑戰模式</h3>
+                <div class="space-y-3">
+                    <button onclick="startQuiz('multiple-choice')" class="btn-game btn-primary w-full p-4 text-lg">四選一選擇題</button>
+                    <button onclick="startQuiz('fill-in-the-blank')" class="btn-game btn-secondary w-full p-4 text-lg">英翻中拼寫</button>
+                    <button onclick="closeModeModal()" class="mt-4 text-gray-400 font-bold text-sm uppercase hover:text-gray-600">取消</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="quiz-screen" class="hidden flex-grow flex flex-col items-center justify-center w-full">
+            <div class="w-full text-center mb-8">
+                <h2 class="text-gray-400 font-bold uppercase tracking-wider text-sm mb-2">翻譯這個單字</h2>
+                <div class="flex flex-col items-center gap-2">
+                     <span id="part-of-speech" class="px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-xs font-bold"></span>
+                     <h1 id="question-word" class="text-4xl md:text-5xl font-black text-gray-800 tracking-tight"></h1>
+                </div>
+                <button onclick="speakWord()" class="mt-4 p-3 bg-blue-50 rounded-full text-blue-400 hover:bg-blue-100 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.929a1 1 0 011.414 0A9.972 9.972 0 0119 10a9.972 9.972 0 01-2.929 7.071 1 1 0 01-1.414-1.414A7.971 7.971 0 0017 10c0-2.21-.894-4.208-2.343-5.657a1 1 0 010-1.414zm-2.829 2.828a1 1 0 011.415 0A5.983 5.983 0 0115 10a5.983 5.983 0 01-1.757 4.243 1 1 0 01-1.415-1.415A3.984 3.984 0 0013 10a3.983 3.983 0 00-1.172-2.828 1 1 0 010-1.414z" clip-rule="evenodd" /></svg>
+                </button>
+            </div>
+            <div id="multiple-choice-options" class="grid grid-cols-1 w-full gap-3 mb-24"></div>
+            <div id="fill-in-the-blank-input" class="w-full mb-24 hidden">
+                <textarea id="answer-input" rows="3" placeholder="請輸入中文意思..." class="w-full bg-gray-100 p-4 rounded-2xl border-2 border-gray-200 text-xl focus:outline-none focus:border-indigo-500 focus:bg-white transition resize-none"></textarea>
+            </div>
+        </div>
+
+        <div id="results-screen" class="hidden flex-grow flex flex-col items-center justify-center text-center animate-fade-in">
+            <div class="mb-6 relative">
+                <div class="absolute inset-0 bg-yellow-200 rounded-full blur-xl opacity-50"></div>
+                <img src="https://cdn-icons-png.flaticon.com/512/3176/3176294.png" class="w-32 h-32 relative z-10 animate-bounce" alt="Trophy">
+            </div>
+            <h2 class="text-3xl font-extrabold text-gray-800 mb-2">測驗完成！</h2>
+            <p class="text-gray-500 mb-8 text-lg">休息一下，為了走更長遠的路</p>
+            
+            <div class="grid grid-cols-2 gap-4 w-full mb-8">
+                <div class="bg-orange-50 p-4 rounded-2xl border-2 border-orange-100">
+                    <p class="text-orange-500 font-bold text-sm uppercase">總分</p>
+                    <p id="final-score" class="text-3xl font-black text-orange-600"></p>
+                </div>
+                <div class="bg-blue-50 p-4 rounded-2xl border-2 border-blue-100">
+                    <p class="text-blue-500 font-bold text-sm uppercase">準確率</p>
+                    <p id="accuracy-text" class="text-3xl font-black text-blue-600"></p>
+                </div>
+            </div>
+
+            <div class="space-y-3 w-full">
+                <button onclick="restartQuiz()" class="btn-game btn-primary w-full p-4 text-lg shadow-lg">再玩一次</button>
+                <button onclick="goToMenu()" class="btn-game btn-secondary w-full p-4 text-lg">返回主選單</button>
             </div>
         </div>
 
     </div>
 
+    <div id="bottom-action-bar" class="fixed bottom-0 left-0 right-0 border-t-2 border-gray-100 bg-white p-4 pb-6 z-40 hidden">
+        <div class="max-w-2xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div id="feedback-container" class="hidden w-full flex items-center gap-4">
+                <div id="feedback-icon" class="w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-white shrink-0"></div>
+                <div class="text-left">
+                    <h3 id="feedback-title" class="font-extrabold text-xl"></h3>
+                    <p id="feedback-detail" class="text-sm font-medium opacity-90"></p>
+                </div>
+            </div>
+            <button id="check-btn" class="btn-game btn-primary w-full md:w-auto md:px-12 py-3 text-lg flex-grow-0">檢查答案</button>
+            <button id="continue-btn" class="btn-game w-full md:w-auto md:px-12 py-3 text-lg hidden">繼續</button>
+        </div>
+    </div>
+
+    <div id="achievement-toast" class="fixed bottom-32 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white px-6 py-4 rounded-2xl shadow-2xl z-50 hidden flex items-center gap-4 min-w-[300px]">
+        <div class="text-3xl">🏆</div>
+        <div>
+            <p class="text-yellow-400 font-bold uppercase text-xs tracking-wider">成就解鎖！</p>
+            <p id="toast-title" class="font-bold text-lg">成就名稱</p>
+        </div>
+    </div>
+
     <script>
-        // --- App Logic ---
-        const wordBanks = {
-            'bank1': [ // 多益核心(一)：求職與規範
-                { english: "résumé", chinese: ["履歷表"], pos: "n." }, { english: "opening", chinese: ["空缺", "職缺"], pos: "n." }, { english: "applicant", chinese: ["申請者", "應徵者"], pos: "n." }, { english: "requirement", chinese: ["必要條件", "要求"], pos: "n." }, { english: "meet", chinese: ["滿足", "符合"], pos: "v." }, { english: "qualified", chinese: ["有資格的", "勝任的"], pos: "adj." }, { english: "candidate", chinese: ["候選者", "應徵者"], pos: "n." }, { english: "confidence", chinese: ["信心", "自信"], pos: "n." }, { english: "highly", chinese: ["很", "非常"], pos: "adv." }, { english: "professional", chinese: ["專業的", "職業的"], pos: "adj./n." }, { english: "interview", chinese: ["面試"], pos: "n./v." }, { english: "hire", chinese: ["雇用"], pos: "v." }, { english: "training", chinese: ["訓練"], pos: "n." }, { english: "reference", chinese: ["推薦信", "參考"], pos: "n." }, { english: "position", chinese: ["職位", "位置"], pos: "n./v." }, { english: "achievement", chinese: ["成就", "達成"], pos: "n." }, { english: "impressed", chinese: ["感到印象深刻的"], pos: "adj." }, { english: "excellent", chinese: ["優秀的", "傑出的"], pos: "adj." }, { english: "eligible", chinese: ["有資格的", "合適的"], pos: "adj." }, { english: "identify", chinese: ["辨認", "認出"], pos: "v." }, { english: "associate", chinese: ["使有關聯"], pos: "v." }, { english: "condition", chinese: ["條件"], pos: "n." }, { english: "employment", chinese: ["雇用"], pos: "n." }, { english: "lack", chinese: ["缺乏"], pos: "v./n." }, { english: "managerial", chinese: ["管理的"], pos: "adj." }, { english: "diligent", chinese: ["勤奮的"], pos: "adj." }, { english: "familiar", chinese: ["熟悉的", "親近的"], pos: "adj." }, { english: "proficiency", chinese: ["熟練", "精通"], pos: "n." }, { english: "prospective", chinese: ["預期的", "未來的"], pos: "adj." }, { english: "appeal", chinese: ["呼籲", "有吸引力"], pos: "v." }, { english: "specialize", chinese: ["專攻", "專門從事"], pos: "v." }, { english: "apprehensive", chinese: ["擔心的", "憂慮的"], pos: "adj." }, { english: "consultant", chinese: ["顧問"], pos: "n." }, { english: "attire", chinese: ["服裝", "衣著"], pos: "n." }, { english: "code", chinese: ["規範", "密碼"], pos: "n." }, { english: "concern", chinese: ["擔心", "憂慮"], pos: "n." }, { english: "policy", chinese: ["政策", "規定"], pos: "n." }, { english: "comply", chinese: ["遵守", "遵從"], pos: "v." }, { english: "regulation", chinese: ["規定"], pos: "n." }, { english: "exception", chinese: ["例外"], pos: "n." }, { english: "adhere", chinese: ["遵守", "堅持"], pos: "v." }, { english: "severely", chinese: ["嚴厲地", "嚴重地"], pos: "adv." }, { english: "refrain", chinese: ["克制", "抑制"], pos: "v." }, { english: "permission", chinese: ["允許", "許可"], pos: "n." }, { english: "access", chinese: ["使用權", "通道"], pos: "n." },
-            ],
-            'bank2': [ // 多益核心(二)：辦公室溝通
-                { english: "thoroughly", chinese: ["徹底地", "完全地"], pos: "adv." }, { english: "revise", chinese: ["修訂", "變更"], pos: "v." }, { english: "approach", chinese: ["接近", "處理方法"], pos: "n." }, { english: "approval", chinese: ["批准", "許可"], pos: "n." }, { english: "form", chinese: ["表格", "類型"], pos: "n." }, { english: "immediately", chinese: ["立即", "馬上"], pos: "adv." }, { english: "inspection", chinese: ["檢查", "視察"], pos: "n." }, { english: "arrangement", chinese: ["安排", "準備"], pos: "n." }, { english: "procedure", chinese: ["手續", "程序"], pos: "n." }, { english: "negative", chinese: ["負面的", "消極的"], pos: "adj." }, { english: "mandate", chinese: ["授權", "命令"], pos: "n." }, { english: "effect", chinese: ["效力", "影響"], pos: "n." }, { english: "drastically", chinese: ["激烈地", "徹底地"], pos: "adv." }, { english: "according to", chinese: ["根據", "依照"], pos: "phr." }, { english: "enable", chinese: ["使能夠"], pos: "v." }, { english: "standard", chinese: ["標準", "規範"], pos: "n." }, { english: "constant", chinese: ["持續的", "不斷的"], pos: "adj." }, { english: "act", chinese: ["法案", "行動"], pos: "n." }, { english: "obligation", chinese: ["義務", "責任"], pos: "n." }, { english: "authorize", chinese: ["批准", "授權"], pos: "v." }, { english: "prohibit", chinese: ["禁止"], pos: "v." }, { english: "abolish", chinese: ["廢除"], pos: "v." }, { english: "enforce", chinese: ["執行", "實施"], pos: "v." }, { english: "habit", chinese: ["習慣"], pos: "n." }, { english: "legislation", chinese: ["立法", "法律"], pos: "n." }, { english: "restrict", chinese: ["限制", "限定"], pos: "v." }, { english: "accustomed", chinese: ["習慣的"], pos: "adj." }, { english: "corporation", chinese: ["公司", "法人"], pos: "n." }, { english: "demanding", chinese: ["要求多的", "吃力的"], pos: "adj." }, { english: "colleague", chinese: ["同事"], pos: "n." }, { english: "division", chinese: ["部門"], pos: "n." }, { english: "request", chinese: ["要求"], pos: "n." }, { english: "efficiently", chinese: ["有效率地"], pos: "adv." }, { english: "manage", chinese: ["經營", "管理"], pos: "v." }, { english: "submit", chinese: ["提交"], pos: "v." }, { english: "directly", chinese: ["直接地"], pos: "adv." }, { english: "remind", chinese: ["提醒", "使想起"], pos: "v." }, { english: "instruct", chinese: ["指示", "指導"], pos: "v." }, { english: "deadline", chinese: ["最後期限"], pos: "n." }, { english: "sample", chinese: ["樣本", "樣品"], pos: "n." },
-            ],
-            'bank3': [ // 多益核心(三)：綜合商務
-                { english: "notify", chinese: ["通知", "告知"], pos: "v." }, { english: "perform", chinese: ["執行", "表演"], pos: "v." }, { english: "monitor", chinese: ["監視", "監控"], pos: "v./n." }, { english: "deserve", chinese: ["值得"], pos: "v." }, { english: "assignment", chinese: ["工作", "任務"], pos: "n." }, { english: "entire", chinese: ["整個的"], pos: "adj." }, { english: "release", chinese: ["發表", "發行"], pos: "v./n." }, { english: "extension", chinese: ["延長", "分機"], pos: "n." }, { english: "electronically", chinese: ["以電子方式地"], pos: "adv." }, { english: "attendance", chinese: ["出席", "出勤"], pos: "n." }, { english: "absolutely", chinese: ["絕對地", "完全地"], pos: "adv." }, { english: "delegate", chinese: ["委派", "代表"], pos: "v./n." }, { english: "attentively", chinese: ["專心地"], pos: "adv." }, { english: "supervision", chinese: ["監督"], pos: "n." }, { english: "workshop", chinese: ["工作坊", "研討會"], pos: "n." }, { english: "draw", chinese: ["拉", "吸引"], pos: "v." }, { english: "revision", chinese: ["修訂"], pos: "n." }, { english: "reluctantly", chinese: ["不情願地", "勉強地"], pos: "adv." }, { english: "acquaint", chinese: ["使熟悉"], pos: "v." }, { english: "convey", chinese: ["傳達"], pos: "v." }, { english: "check", chinese: ["檢查", "確認"], pos: "v." }, { english: "headquarters", chinese: ["總部"], pos: "n." }, { english: "file", chinese: ["歸檔", "檔案"], pos: "v./n." }, { english: "oversee", chinese: ["監督"], pos: "v." }, { english: "involved", chinese: ["有關的", "牽涉在內的"], pos: "adj." }, { english: "concentrate", chinese: ["集中", "專注"], pos: "v." },
-            ],
-            'bank4': [ // 多益核心(四)：職場實務
-                { english: "lax", chinese: ["鬆懈的"], pos: "adj." }, { english: "procrastinate", chinese: ["拖延"], pos: "v." }, { english: "combined", chinese: ["聯合的", "結合的"], pos: "adj." }, { english: "accomplish", chinese: ["達成"], pos: "v." }, { english: "voluntarily", chinese: ["自願地"], pos: "adv." }, { english: "undertake", chinese: ["從事", "承擔"], pos: "v." }, { english: "assume", chinese: ["假定", "承擔"], pos: "v." }, { english: "occasionally", chinese: ["偶爾"], pos: "adv." }, { english: "employee", chinese: ["員工", "受雇者"], pos: "n." }, { english: "assist", chinese: ["協助", "援助"], pos: "v." }, { english: "satisfied", chinese: ["感到滿意的"], pos: "adj." }, { english: "manner", chinese: ["方式", "態度"], pos: "n." }, { english: "responsible", chinese: ["負責任的"], pos: "adj." }, { english: "conduct", chinese: ["進行"], pos: "v." }, { english: "adjust", chinese: ["調整", "適應"], pos: "v." }, { english: "personnel", chinese: ["員工", "人事部門"], pos: "n." }, { english: "agree", chinese: ["同意"], pos: "v." }, { english: "supervise", chinese: ["監督", "指導"], pos: "v." }, { english: "coworker", chinese: ["同事"], pos: "n." }, { english: "direct", chinese: ["引導", "指揮"], pos: "v." }, { english: "confidential", chinese: ["機密的"], pos: "adj." }, { english: "assign", chinese: ["分配", "指派"], pos: "v." }, { english: "leading", chinese: ["領導的", "領先的"], pos: "adj." }, { english: "formal", chinese: ["正式的"], pos: "adj." }, { english: "remove", chinese: ["移除"], pos: "v." }, { english: "collect", chinese: ["收集"], pos: "v." }, { english: "coordinate", chinese: ["協調"], pos: "v." }, { english: "hardly", chinese: ["幾乎不"], pos: "adv." }, { english: "abstract", chinese: ["抽象的"], pos: "adj." }, { english: "directory", chinese: ["通訊錄"], pos: "n." }, { english: "accountable", chinese: ["應負責任的"], pos: "adj." }, { english: "skillfully", chinese: ["巧妙地", "熟練地"], pos: "adv." }, { english: "exclusive", chinese: ["獨有的", "排外的"], pos: "adj." }, { english: "intention", chinese: ["意圖", "意向"], pos: "n." }, { english: "transform", chinese: ["改變", "轉變"], pos: "v." }, { english: "respectful", chinese: ["尊重的"], pos: "adj." }, { english: "duplicate", chinese: ["副本"], pos: "n." }, { english: "contrary", chinese: ["相反"], pos: "n." }, { english: "disturbing", chinese: ["令人焦慮的"], pos: "adj." }, { english: "engage", chinese: ["參加", "參與"], pos: "v." }, { english: "foster", chinese: ["促進", "培養"], pos: "v." }, { english: "neutrality", chinese: ["中立"], pos: "n." }, { english: "widely", chinese: ["廣泛地"], pos: "adv." }, { english: "externally", chinese: ["外部地"], pos: "adv." },
-            ],
-            'bank5': [ // 多益核心(五)：進階商務
-                { english: "sophisticated", chinese: ["精密的", "高雅的"], pos: "adj." }, { english: "timely", chinese: ["及時的", "適時的"], pos: "adj." }, { english: "realistically", chinese: ["實際上", "實事求是地"], pos: "adv." }, { english: "promptly", chinese: ["迅速地", "準時地"], pos: "adv." }, { english: "accessible", chinese: ["可進入的", "可利用的"], pos: "adj." }, { english: "implement", chinese: ["實施", "執行"], pos: "v." }, { english: "feedback", chinese: ["回饋意見", "反響"], pos: "n." }, { english: "outstanding", chinese: ["傑出的", "未償付的"], pos: "adj." }, { english: "inform", chinese: ["通知"], pos: "v." }, { english: "replacement", chinese: ["代替", "替代物"], pos: "n." }, { english: "announcement", chinese: ["公告", "宣布"], pos: "n." }, { english: "department", chinese: ["部門"], pos: "n." }, { english: "permanently", chinese: ["永久地"], pos: "adv." }, { english: "fulfill", chinese: ["滿足", "履行"], pos: "v." }, { english: "outline", chinese: ["概要", "大綱"], pos: "n." }, { english: "explain", chinese: ["說明"], pos: "v." }, { english: "contain", chinese: ["包容", "容納"], pos: "v." }, { english: "compile", chinese: ["彙整", "收集"], pos: "v." }, { english: "subsequent", chinese: ["後來的", "隨後的"], pos: "adj." }, { english: "overview", chinese: ["概要", "概觀"], pos: "n." }, { english: "provider", chinese: ["供應商", "提供者"], pos: "n." }, { english: "matter", chinese: ["問題", "事情"], pos: "n." }, { english: "expertise", chinese: ["專門知識", "專業技術"], pos: "n." }, { english: "demonstrate", chinese: ["證明", "示範操作"], pos: "v." }, { english: "remainder", chinese: ["剩餘"], pos: "n." }, { english: "essential", chinese: ["必要的", "本質上的"], pos: "adj." }, { english: "divide", chinese: ["劃分", "分開"], pos: "v." }, { english: "major", chinese: ["主要的", "重大的"], pos: "adj." }, { english: "compliance", chinese: ["遵守"], pos: "n." }, { english: "clarify", chinese: ["闡明", "解釋"], pos: "v." }, { english: "face", chinese: ["面對"], pos: "v." }, { english: "follow", chinese: ["跟隨", "密切注意"], pos: "v." }, { english: "aspect", chinese: ["觀點", "方面"], pos: "n." }, { english: "apparently", chinese: ["顯然", "看來"], pos: "adv." }, { english: "aware", chinese: ["知道的", "意識到的"], pos: "adj." }, { english: "extended", chinese: ["延長的", "延伸的"], pos: "adj." }, { english: "accidentally", chinese: ["意外地", "偶然地"], pos: "adv." }, { english: "advisable", chinese: ["可取的", "明智的"], pos: "adj." }, { english: "speak", chinese: ["講話"], pos: "v." },
-            ],
-            'bank6': [ // 多益核心(六)：藝文與活動
-                { english: "rest", chinese: ["休息"], pos: "v." }, { english: "exhibition", chinese: ["展覽"], pos: "n." }, { english: "celebrity", chinese: ["名人"], pos: "n." }, { english: "live", chinese: ["直播的"], pos: "adj." }, { english: "improvise", chinese: ["即興演奏"], pos: "v." }, { english: "popular", chinese: ["受歡迎的"], pos: "adj." }, { english: "donation", chinese: ["捐贈", "捐獻"], pos: "n." }, { english: "alumni", chinese: ["校友們", "畢業生們"], pos: "n." }, { english: "present", chinese: ["提示", "出示"], pos: "v." }, { english: "admission", chinese: ["入場"], pos: "n." }, { english: "banquet", chinese: ["宴會"], pos: "n." }, { english: "anniversary", chinese: ["周年紀念日"], pos: "n." }, { english: "required", chinese: ["必要的", "必須的"], pos: "adj." }, { english: "succeed", chinese: ["成功", "繼任"], pos: "v." }, { english: "collection", chinese: ["收藏品", "收取"], pos: "n." }, { english: "fund-raising", chinese: ["募款"], pos: "n." }, { english: "resume", chinese: ["繼續", "重新開始"], pos: "v." }, { english: "issue", chinese: ["一期", "問題"], pos: "n." }, { english: "subscription", chinese: ["訂閱"], pos: "n." }, { english: "appear", chinese: ["出現", "現身"], pos: "v." }, { english: "accompany", chinese: ["陪同", "伴隨"], pos: "v." }, { english: "edition", chinese: ["版本"], pos: "n." }, { english: "specifically", chinese: ["明確地", "具體地"], pos: "adv." }, { english: "anonymous", chinese: ["匿名的", "不具名的"], pos: "adj." }, { english: "commit", chinese: ["奉獻", "致力於"], pos: "v." }, { english: "informative", chinese: ["提供資訊的", "有用的"], pos: "adj." }, { english: "audience", chinese: ["聽眾", "觀眾"], pos: "n." }, { english: "author", chinese: ["作家", "作者"], pos: "n." }, { english: "note", chinese: ["注意到", "提及"], pos: "v." }, { english: "antique", chinese: ["古董"], pos: "n." }, { english: "manuscript", chinese: ["手稿", "原稿"], pos: "n." }, { english: "beneficial", chinese: ["有益的", "有利的"], pos: "adj." }, { english: "upcoming", chinese: ["即將來臨的"], pos: "adj." }, { english: "lend", chinese: ["借出"], pos: "v." }, { english: "current", chinese: ["現在的", "目前的"], pos: "adj." }, { english: "local", chinese: ["地方的", "當地的"], pos: "adj." }, { english: "variety", chinese: ["多樣性", "變化"], pos: "n." }, { english: "advocate", chinese: ["擁護者"], pos: "n." }, { english: "contributor", chinese: ["撰稿人", "捐贈者"], pos: "n." }, { english: "defy", chinese: ["反抗"], pos: "v." }, { english: "fascinating", chinese: ["迷人的", "美妙的"], pos: "adj." }, { english: "showing", chinese: ["上映", "展示"], pos: "n." },
-            ],
-            'bank7': [ // 多益核心(七)：市場與行銷
-                { english: "survey", chinese: ["調查", "意見調查"], pos: "n." }, { english: "analysis", chinese: ["分析"], pos: "n." }, { english: "respondent", chinese: ["回答者", "受訪者"], pos: "n." }, { english: "monopoly", chinese: ["獨佔", "壟斷"], pos: "n." }, { english: "competition", chinese: ["競爭"], pos: "n." }, { english: "consistently", chinese: ["一貫地", "始終如一地"], pos: "adv." }, { english: "demand", chinese: ["需求", "要求"], pos: "n./v." }, { english: "expand", chinese: ["擴張", "擴大"], pos: "v." }, { english: "advanced", chinese: ["高階的", "先進的"], pos: "adj." }, { english: "postpone", chinese: ["延後"], pos: "v." }, { english: "additional", chinese: ["額外的", "附加的"], pos: "adj." }, { english: "appreciate", chinese: ["感謝", "賞識"], pos: "v." }, { english: "demonstration", chinese: ["證明", "示範操作"], pos: "n." }, { english: "buy", chinese: ["購買"], pos: "v." }, { english: "examine", chinese: ["檢視", "審問"], pos: "v." }, { english: "effective", chinese: ["生效的", "有效的"], pos: "adj." }, { english: "like", chinese: ["喜歡"], pos: "v." }, { english: "especially", chinese: ["尤其", "特別"], pos: "adv." }, { english: "closely", chinese: ["仔細地", "密切地"], pos: "adv." }, { english: "reserve", chinese: ["預約", "保留"], pos: "v." }, { english: "cooperate", chinese: ["協力", "合作"], pos: "v." }, { english: "very", chinese: ["很"], pos: "adv." }, { english: "consecutive", chinese: ["連續的"], pos: "adj." }, { english: "expectation", chinese: ["預期", "期待"], pos: "n." }, { english: "publicize", chinese: ["公布", "宣傳"], pos: "v." }, { english: "raise", chinese: ["提高", "增加"], pos: "v." }, { english: "extremely", chinese: ["極度地", "非常"], pos: "adv." }, { english: "affect", chinese: ["影響"], pos: "v." }, { english: "target", chinese: ["目標"], pos: "n." }, { english: "campaign", chinese: ["宣傳活動"], pos: "n." }, { english: "probable", chinese: ["有可能的"], pos: "adj." }, { english: "focus", chinese: ["聚焦", "集中"], pos: "v." }, { english: "seasonal", chinese: ["季節的"], pos: "adj." }, { english: "impact", chinese: ["影響"], pos: "n." }, { english: "comparison", chinese: ["比較"], pos: "n." }, { english: "gap", chinese: ["差距"], pos: "n." }, { english: "mounting", chinese: ["增加的", "上升中的"], pos: "adj." }, { english: "reflective", chinese: ["反映的"], pos: "adj." },
-            ],
-             'bank8': [ // 多益核心(八)：商業與經濟
-                { english: "advertisement", chinese: ["廣告"], pos: "n." }, { english: "marginal", chinese: ["微小的", "邊緣的"], pos: "adj." }, { english: "customer", chinese: ["顧客"], pos: "n." }, { english: "influence", chinese: ["影響"], pos: "v." }, { english: "instantly", chinese: ["立即", "馬上"], pos: "adv." }, { english: "creative", chinese: ["創造性的", "有創意的"], pos: "adj." }, { english: "aggressively", chinese: ["積極地"], pos: "adv." }, { english: "aim", chinese: ["目標", "目的"], pos: "n." }, { english: "strategy", chinese: ["策略"], pos: "n." }, { english: "indicate", chinese: ["指示", "顯示"], pos: "v." }, { english: "attract", chinese: ["吸引", "引起"], pos: "v." }, { english: "experience", chinese: ["經驗"], pos: "n." }, { english: "analyze", chinese: ["分析"], pos: "v." }, { english: "introduce", chinese: ["介紹"], pos: "v." }, { english: "advise", chinese: ["建議"], pos: "v." }, { english: "subscribe", chinese: ["訂閱"], pos: "v." }, { english: "absence", chinese: ["不在", "缺席"], pos: "n." }, { english: "means", chinese: ["方法", "手段"], pos: "n." }, { english: "prefer", chinese: ["更喜歡", "偏好"], pos: "v." }, { english: "advantage", chinese: ["優點", "優勢"], pos: "n." }, { english: "forward", chinese: ["向前"], pos: "adv." }, { english: "contemporary", chinese: ["當代的"], pos: "adj." }, { english: "discussion", chinese: ["討論"], pos: "n." }, { english: "initial", chinese: ["開始的", "最初的"], pos: "adj." }, { english: "steadily", chinese: ["平穩地"], pos: "adv." }, { english: "necessarily", chinese: ["必然"], pos: "adv." }, { english: "resolve", chinese: ["解決"], pos: "v." }, { english: "detect", chinese: ["察覺", "發現"], pos: "v." }, { english: "intensify", chinese: ["強化"], pos: "v." }, { english: "favorably", chinese: ["善意地", "順利地"], pos: "adv." }, { english: "cover", chinese: ["包含", "支付"], pos: "v." }, { english: "less", chinese: ["較少的"], pos: "adj." }, { english: "majority", chinese: ["大部分", "大多數"], pos: "n." }, { english: "adopt", chinese: ["採納"], pos: "v." }, { english: "largely", chinese: ["大部分", "主要"], pos: "adv." }, { english: "disregard", chinese: ["不理會", "忽視"], pos: "v." }, { english: "effort", chinese: ["努力"], pos: "n." }, { english: "incentive", chinese: ["誘因", "獎金"], pos: "n." }, { english: "need", chinese: ["需要", "需求"], pos: "n." }, { english: "mastermind", chinese: ["策畫者"], pos: "n." },
-            ]
+        // --- User Progress & Achievement System ---
+        const USER_DATA_KEY = 'vocab_app_user_v1';
+        
+        const achievementsList = [
+            { id: 'first_blood', icon: '🐣', title: '初出茅廬', desc: '完成你的第一次測驗', check: (d) => d.quizzesCompleted >= 1 },
+            { id: 'perfect_one', icon: '🧑‍🏫', title: '英文小老師', desc: '在任一題庫中獲得滿分', check: (d) => d.perfectBanks.length >= 1 },
+            { id: 'polymath', icon: '🧭', title: '博學多聞', desc: '嘗試過 3 個不同的題庫', check: (d) => d.playedBanks.length >= 3 },
+            { id: 'sniper', icon: '🎯', title: '單字狙擊手', desc: '累計答對 100 個單字', check: (d) => d.totalCorrect >= 100 },
+            { id: 'king', icon: '👑', title: '英文之王', desc: '所有 8 個核心題庫皆獲得滿分', check: (d) => d.perfectBanks.length >= 8 }
+        ];
+
+        let userData = {
+            totalCorrect: 0,
+            quizzesCompleted: 0,
+            playedBanks: [], // Array of bank keys
+            perfectBanks: [], // Array of bank keys
+            unlockedAchievements: [] // Array of achievement IDs
         };
-        
-        wordBanks.bank_all = [...wordBanks.bank1, ...wordBanks.bank2, ...wordBanks.bank3, ...wordBanks.bank4, ...wordBanks.bank5, ...wordBanks.bank6, ...wordBanks.bank7, ...wordBanks.bank8];
 
-        // DOM Elements
-        const homeScreen = document.getElementById('home-screen');
-        const modeSelection = document.getElementById('mode-selection');
-        const quizScreen = document.getElementById('quiz-screen');
-        const resultsScreen = document.getElementById('results-screen');
-        const progressText = document.getElementById('progress-text');
-        const scoreText = document.getElementById('score-text');
-        const questionWord = document.getElementById('question-word');
-        const partOfSpeech = document.getElementById('part-of-speech');
-        const multipleChoiceOptions = document.getElementById('multiple-choice-options');
-        const fillInTheBlankInput = document.getElementById('fill-in-the-blank-input');
-        const answerInput = document.getElementById('answer-input');
-        const submitFillInBtn = document.getElementById('submit-fill-in');
-        const feedbackMessage = document.getElementById('feedback-message');
-        const nextBtn = document.getElementById('next-btn');
-        const finalScore = document.getElementById('final-score');
-
-        // State Variables
-        let currentQuiz = [];
-        let currentQuestionIndex = 0;
-        let score = 0;
-        let quizMode = '';
-        let selectedBank = '';
-        let quizLength = 0;
-        
-        // Wrong Answer Review System
-        let wrongAnswersReviewPool = [];
-
-        function shuffle(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
+        function loadUserData() {
+            const saved = localStorage.getItem(USER_DATA_KEY);
+            if (saved) {
+                userData = { ...userData, ...JSON.parse(saved) };
             }
-            return array;
         }
 
-        function selectBank(bankName) {
-            selectedBank = bankName;
-            modeSelection.classList.remove('hidden');
+        function saveUserData() {
+            localStorage.setItem(USER_DATA_KEY, JSON.stringify(userData));
+        }
+
+        function updateAchievementBadge() {
+            const count = userData.unlockedAchievements.length;
+            const badge = document.getElementById('ach-badge');
+            if (badge) {
+                badge.textContent = count;
+                if (count > 0) {
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            }
+        }
+
+        function checkAndUnlockAchievements() {
+            let newUnlock = false;
+            achievementsList.forEach(ach => {
+                if (!userData.unlockedAchievements.includes(ach.id)) {
+                    if (ach.check(userData)) {
+                        userData.unlockedAchievements.push(ach.id);
+                        showToast(ach.title);
+                        newUnlock = true;
+                    }
+                }
+            });
+            
+            if (newUnlock) {
+                saveUserData();
+                updateAchievementBadge();
+            }
+        }
+
+        function showToast(title) {
+            const toast = document.getElementById('achievement-toast');
+            document.getElementById('toast-title').textContent = title;
+            toast.classList.remove('hidden');
+            toast.classList.add('toast-enter');
+            confetti({ particleCount: 100, spread: 70, origin: { y: 0.8 }, colors: ['#facc15'] });
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('toast-enter');
+            }, 4000);
+        }
+
+        // --- Data Config ---
+        const wordBanks = {
+            'bank1': { icon: '💼', title: '求職與規範', words: [
+                { english: "résumé", chinese: ["履歷表"], pos: "n." }, { english: "opening", chinese: ["空缺", "職缺"], pos: "n." }, { english: "applicant", chinese: ["申請者", "應徵者"], pos: "n." }, { english: "requirement", chinese: ["必要條件", "要求"], pos: "n." }, { english: "meet", chinese: ["滿足", "符合"], pos: "v." }, { english: "qualified", chinese: ["有資格的", "勝任的"], pos: "adj." }, { english: "candidate", chinese: ["候選者", "應徵者"], pos: "n." }, { english: "confidence", chinese: ["信心", "自信"], pos: "n." }, { english: "highly", chinese: ["很", "非常"], pos: "adv." }, { english: "professional", chinese: ["專業的", "職業的"], pos: "adj./n." }, { english: "interview", chinese: ["面試"], pos: "n./v." }, { english: "hire", chinese: ["雇用"], pos: "v." }, { english: "training", chinese: ["訓練"], pos: "n." }, { english: "reference", chinese: ["推薦信", "參考"], pos: "n." }, { english: "position", chinese: ["職位", "位置"], pos: "n./v." }
+            ]},
+            'bank2': { icon: '🖨️', title: '辦公室溝通', words: [
+                { english: "thoroughly", chinese: ["徹底地", "完全地"], pos: "adv." }, { english: "revise", chinese: ["修訂", "變更"], pos: "v." }, { english: "approach", chinese: ["接近", "處理方法"], pos: "n." }, { english: "approval", chinese: ["批准", "許可"], pos: "n." }, { english: "form", chinese: ["表格", "類型"], pos: "n." }, { english: "immediately", chinese: ["立即", "馬上"], pos: "adv." }, { english: "inspection", chinese: ["檢查", "視察"], pos: "n." }, { english: "arrangement", chinese: ["安排", "準備"], pos: "n." }, { english: "procedure", chinese: ["手續", "程序"], pos: "n." }, { english: "negative", chinese: ["負面的", "消極的"], pos: "adj." }, { english: "mandate", chinese: ["授權", "命令"], pos: "n." }, { english: "effect", chinese: ["效力", "影響"], pos: "n." }
+            ]},
+            'bank3': { icon: '🌐', title: '綜合商務', words: [
+                { english: "notify", chinese: ["通知", "告知"], pos: "v." }, { english: "perform", chinese: ["執行", "表演"], pos: "v." }, { english: "monitor", chinese: ["監視", "監控"], pos: "v./n." }, { english: "deserve", chinese: ["值得"], pos: "v." }, { english: "assignment", chinese: ["工作", "任務"], pos: "n." }, { english: "entire", chinese: ["整個的"], pos: "adj." }, { english: "release", chinese: ["發表", "發行"], pos: "v./n." }, { english: "extension", chinese: ["延長", "分機"], pos: "n." }, { english: "electronically", chinese: ["以電子方式地"], pos: "adv." }, { english: "attendance", chinese: ["出席", "出勤"], pos: "n." }, { english: "absolutely", chinese: ["絕對地", "完全地"], pos: "adv." }
+            ]},
+            'bank4': { icon: '🤝', title: '職場實務', words: [
+                { english: "lax", chinese: ["鬆懈的"], pos: "adj." }, { english: "procrastinate", chinese: ["拖延"], pos: "v." }, { english: "combined", chinese: ["聯合的", "結合的"], pos: "adj." }, { english: "accomplish", chinese: ["達成"], pos: "v." }, { english: "voluntarily", chinese: ["自願地"], pos: "adv." }, { english: "undertake", chinese: ["從事", "承擔"], pos: "v." }, { english: "assume", chinese: ["假定", "承擔"], pos: "v." }, { english: "occasionally", chinese: ["偶爾"], pos: "adv." }, { english: "employee", chinese: ["員工", "受雇者"], pos: "n." }, { english: "assist", chinese: ["協助", "援助"], pos: "v." }
+            ]},
+            'bank5': { icon: '🚀', title: '進階商務', words: [
+                { english: "sophisticated", chinese: ["精密的", "高雅的"], pos: "adj." }, { english: "timely", chinese: ["及時的", "適時的"], pos: "adj." }, { english: "realistically", chinese: ["實際上", "實事求是地"], pos: "adv." }, { english: "promptly", chinese: ["迅速地", "準時地"], pos: "adv." }, { english: "accessible", chinese: ["可進入的", "可利用的"], pos: "adj." }, { english: "implement", chinese: ["實施", "執行"], pos: "v." }, { english: "feedback", chinese: ["回饋意見", "反響"], pos: "n." }, { english: "outstanding", chinese: ["傑出的", "未償付的"], pos: "adj." }, { english: "inform", chinese: ["通知"], pos: "v." }
+            ]},
+            'bank6': { icon: '🎨', title: '藝文與活動', words: [
+                { english: "rest", chinese: ["休息"], pos: "v." }, { english: "exhibition", chinese: ["展覽"], pos: "n." }, { english: "celebrity", chinese: ["名人"], pos: "n." }, { english: "live", chinese: ["直播的"], pos: "adj." }, { english: "improvise", chinese: ["即興演奏"], pos: "v." }, { english: "popular", chinese: ["受歡迎的"], pos: "adj." }, { english: "donation", chinese: ["捐贈", "捐獻"], pos: "n." }, { english: "alumni", chinese: ["校友們", "畢業生們"], pos: "n." }, { english: "present", chinese: ["提示", "出示"], pos: "v." }
+            ]},
+            'bank7': { icon: '📈', title: '市場與行銷', words: [
+                { english: "survey", chinese: ["調查", "意見調查"], pos: "n." }, { english: "analysis", chinese: ["分析"], pos: "n." }, { english: "respondent", chinese: ["回答者", "受訪者"], pos: "n." }, { english: "monopoly", chinese: ["獨佔", "壟斷"], pos: "n." }, { english: "competition", chinese: ["競爭"], pos: "n." }, { english: "consistently", chinese: ["一貫地", "始終如一地"], pos: "adv." }, { english: "demand", chinese: ["需求", "要求"], pos: "n./v." }, { english: "expand", chinese: ["擴張", "擴大"], pos: "v." }
+            ]},
+            'bank8': { icon: '💰', title: '商業與經濟', words: [
+                { english: "advertisement", chinese: ["廣告"], pos: "n." }, { english: "marginal", chinese: ["微小的", "邊緣的"], pos: "adj." }, { english: "customer", chinese: ["顧客"], pos: "n." }, { english: "influence", chinese: ["影響"], pos: "v." }, { english: "instantly", chinese: ["立即", "馬上"], pos: "adv." }, { english: "creative", chinese: ["創造性的", "有創意的"], pos: "adj." }, { english: "aggressively", chinese: ["積極地"], pos: "adv." }, { english: "aim", chinese: ["目標", "目的"], pos: "n." }
+            ]}
+        };
+        
+        const allWords = [];
+        Object.values(wordBanks).forEach(b => allWords.push(...b.words));
+        wordBanks.bank_all = { icon: '⚔️', title: '完整挑戰 (30題)', words: allWords };
+
+        // Variables
+        let currentQuiz = [], currentQuestionIndex = 0, score = 0, quizMode = '', selectedBank = '', quizLength = 0;
+        let wrongAnswersReviewPool = [], selectedOption = null;
+
+        // DOM Elements
+        const els = {
+            app: document.getElementById('app-container'),
+            home: document.getElementById('home-screen'),
+            quiz: document.getElementById('quiz-screen'),
+            results: document.getElementById('results-screen'),
+            modeModal: document.getElementById('mode-modal'),
+            achModal: document.getElementById('achievement-modal'),
+            achList: document.getElementById('achievements-list'),
+            header: document.getElementById('quiz-header'),
+            progress: document.getElementById('progress-bar'),
+            score: document.getElementById('score-display'),
+            qWord: document.getElementById('question-word'),
+            qPos: document.getElementById('part-of-speech'),
+            mcOptions: document.getElementById('multiple-choice-options'),
+            fillInput: document.getElementById('fill-in-the-blank-input'),
+            ansInput: document.getElementById('answer-input'),
+            bottomBar: document.getElementById('bottom-action-bar'),
+            feedbackBox: document.getElementById('feedback-container'),
+            checkBtn: document.getElementById('check-btn'),
+            continueBtn: document.getElementById('continue-btn')
+        };
+
+        // --- Initialization ---
+        function init() {
+            loadUserData();
+            renderHome();
+            updateAchievementBadge();
+            registerServiceWorker();
+        }
+
+        function renderHome() {
+            const bankContainer = document.getElementById('bank-selection');
+            bankContainer.innerHTML = '';
+            
+            Object.keys(wordBanks).forEach(key => {
+                const bank = wordBanks[key];
+                const btn = document.createElement('div');
+                btn.className = 'bank-btn';
+                if(key === 'bank_all') {
+                    btn.style.borderColor = '#facc15';
+                    btn.style.backgroundColor = '#fefce8';
+                }
+                
+                // Show badge if perfected
+                const badge = userData.perfectBanks.includes(key) ? `<div class="bank-badge">👑</div>` : '';
+
+                btn.innerHTML = `
+                    ${badge}
+                    <div class="bank-icon text-4xl mb-2">${bank.icon}</div>
+                    <div class="bank-title font-bold text-gray-700">${bank.title}</div>
+                `;
+                btn.onclick = () => openModeSelection(key);
+                bankContainer.appendChild(btn);
+            });
+        }
+
+        // --- Achievements UI ---
+        function openAchievements() {
+            els.achList.innerHTML = '';
+            achievementsList.forEach(ach => {
+                const isUnlocked = userData.unlockedAchievements.includes(ach.id);
+                const div = document.createElement('div');
+                div.className = `achievement-item ${isUnlocked ? 'unlocked' : ''}`;
+                div.innerHTML = `
+                    <div class="text-4xl mr-4 filter ${isUnlocked ? '' : 'grayscale'}">${ach.icon}</div>
+                    <div class="flex-grow">
+                        <h4 class="font-bold text-lg ${isUnlocked ? 'text-gray-800' : 'text-gray-400'}">${ach.title}</h4>
+                        <p class="text-sm ${isUnlocked ? 'text-gray-600' : 'text-gray-400'}">${ach.desc}</p>
+                    </div>
+                    <div class="text-2xl">${isUnlocked ? '✅' : '🔒'}</div>
+                `;
+                els.achList.appendChild(div);
+            });
+            els.achModal.classList.remove('hidden');
+        }
+
+        function closeAchievements() {
+            els.achModal.classList.add('hidden');
+        }
+
+        // --- Game Flow ---
+        function openModeSelection(bankKey) {
+            selectedBank = bankKey;
+            els.modeModal.classList.remove('hidden');
+        }
+
+        function closeModeModal() {
+            els.modeModal.classList.add('hidden');
+        }
+
+        function shuffle(array) {
+            return array.sort(() => Math.random() - 0.5);
         }
 
         function startQuiz(mode) {
-            if (!selectedBank) {
-                alert("請先選擇一個題庫！");
-                return;
-            }
+            closeModeModal();
             quizMode = mode;
             currentQuestionIndex = 0;
             score = 0;
+            els.score.textContent = score;
             
             const baseLength = (selectedBank === 'bank_all') ? 30 : 15;
+            const mainWords = [...wordBanks[selectedBank].words];
             
-            // --- Upgraded Wrong Answer Injection Logic ---
-            const mainVocabulary = [...wordBanks[selectedBank]];
             shuffle(wrongAnswersReviewPool);
-
-            const numReviewQuestions = Math.min(5, wrongAnswersReviewPool.length);
-            quizLength = baseLength + numReviewQuestions; // Total length is base + review questions
+            const numReview = Math.min(5, wrongAnswersReviewPool.length);
+            const reviewQs = wrongAnswersReviewPool.slice(0, numReview).map(q => ({...q, isReview: true}));
             
-            // Get review questions and flag them
-            const reviewQuestions = wrongAnswersReviewPool
-                .slice(0, numReviewQuestions)
-                .map(q => ({ ...q, isReview: true }));
+            const freshPool = mainWords.filter(w => !reviewQs.some(r => r.english === w.english));
+            const freshQs = shuffle(freshPool).slice(0, baseLength);
             
-            // Filter out review questions from the main pool to avoid duplicates
-            const newQuestionsPool = mainVocabulary.filter(word => 
-                !reviewQuestions.some(reviewWord => reviewWord.english === word.english)
-            );
+            currentQuiz = shuffle([...reviewQs, ...freshQs]);
+            quizLength = currentQuiz.length;
 
-            const newQuestions = shuffle(newQuestionsPool).slice(0, baseLength);
-
-            // Combine and shuffle the final quiz
-            currentQuiz = shuffle([...reviewQuestions, ...newQuestions]);
+            els.home.classList.add('hidden');
+            els.results.classList.add('hidden');
+            els.quiz.classList.remove('hidden');
+            els.header.classList.remove('hidden');
+            els.bottomBar.classList.remove('hidden');
             
-            homeScreen.classList.add('hidden');
-            resultsScreen.classList.add('hidden');
-            quizScreen.classList.remove('hidden');
             loadQuestion();
         }
 
         function loadQuestion() {
-            resetQuestionUI();
-            if (currentQuestionIndex >= currentQuiz.length) {
-                showResults();
+            if (currentQuestionIndex >= quizLength) {
+                endQuiz();
                 return;
             }
-            const question = currentQuiz[currentQuestionIndex];
-            
-            // Display progress with review tag if applicable
-            const isReview = question.isReview;
-            progressText.innerHTML = `問題 ${currentQuestionIndex + 1} / ${quizLength} ${isReview ? '<span class="text-amber-500 font-bold ml-2">(錯題複習)</span>' : ''}`;
 
-            scoreText.textContent = `分數: ${score}`;
-            questionWord.textContent = question.english;
-            partOfSpeech.textContent = question.pos;
+            resetBottomBar();
+            selectedOption = null;
+            els.ansInput.value = '';
+            
+            const progressPercent = (currentQuestionIndex / quizLength) * 100;
+            els.progress.style.width = `${progressPercent}%`;
+
+            const q = currentQuiz[currentQuestionIndex];
+            els.qWord.textContent = q.english;
+            els.qPos.textContent = q.pos + (q.isReview ? " (複習)" : "");
+            els.qPos.className = q.isReview 
+                ? "px-3 py-1 bg-orange-100 text-orange-600 rounded-full text-xs font-bold" 
+                : "px-3 py-1 bg-indigo-100 text-indigo-600 rounded-full text-xs font-bold";
 
             if (quizMode === 'multiple-choice') {
-                fillInTheBlankInput.classList.add('hidden');
-                multipleChoiceOptions.classList.remove('hidden');
-                setupMultipleChoice(question);
+                els.fillInput.classList.add('hidden');
+                els.mcOptions.classList.remove('hidden');
+                renderMultipleChoice(q);
+                els.checkBtn.disabled = true;
+                els.checkBtn.classList.add('opacity-50', 'cursor-not-allowed');
             } else {
-                multipleChoiceOptions.classList.add('hidden');
-                fillInTheBlankInput.classList.remove('hidden');
-            }
-        }
-        
-        function addWrongAnswerToPool() {
-            const question = currentQuiz[currentQuestionIndex];
-            // Remove the 'isReview' flag before adding to the pool
-            const originalQuestion = { ...question };
-            delete originalQuestion.isReview;
-            
-            if (!wrongAnswersReviewPool.some(w => w.english === originalQuestion.english)) {
-                wrongAnswersReviewPool.push(originalQuestion);
+                els.mcOptions.classList.add('hidden');
+                els.fillInput.classList.remove('hidden');
+                els.checkBtn.disabled = false;
+                els.checkBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                els.ansInput.focus();
             }
         }
 
-        function setupMultipleChoice(correctQuestion) {
-            const currentBank = wordBanks[selectedBank];
-            const correctPos = correctQuestion.pos.split('/')[0];
+        function renderMultipleChoice(currentQ) {
+            const allWordsInBank = wordBanks[selectedBank].words;
+            let distractors = allWordsInBank.filter(w => w.english !== currentQ.english && w.pos.includes(currentQ.pos.split('.')[0]));
+            distractors = shuffle(distractors).slice(0, 3);
             
-            let distractorsPool = currentBank.filter(word => 
-                word.english !== correctQuestion.english && word.pos.includes(correctPos)
-            );
-
-            if (distractorsPool.length < 3) {
-                 const fallbackPool = currentBank.filter(word => word.english !== correctQuestion.english);
-                 distractorsPool = [...new Set([...distractorsPool, ...fallbackPool])];
+            if(distractors.length < 3) {
+                const otherWords = allWordsInBank.filter(w => w.english !== currentQ.english);
+                distractors = shuffle([...new Set([...distractors, ...otherWords])]).slice(0, 3);
             }
 
-            shuffle(distractorsPool);
-
-            const correctAnswerText = correctQuestion.chinese.join(' / ');
-            const options = [correctAnswerText];
+            const options = shuffle([currentQ, ...distractors]);
             
-            const wrongAnswers = distractorsPool.slice(0, 3).map(word => word.chinese.join(' / '));
-            options.push(...wrongAnswers);
-
-            while (options.length < 4) { options.push("其他選項"); }
-            
-            shuffle(options);
-            
-            multipleChoiceOptions.innerHTML = '';
-            options.forEach(optionText => {
-                const button = document.createElement('button');
-                button.className = 'btn option-btn';
-                button.textContent = optionText;
-                button.onclick = () => checkMultipleChoiceAnswer(optionText, correctQuestion, button);
-                multipleChoiceOptions.appendChild(button);
+            els.mcOptions.innerHTML = '';
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'option-card w-full';
+                btn.textContent = opt.chinese.join(' / ');
+                btn.onclick = () => selectOption(btn, opt.english === currentQ.english);
+                els.mcOptions.appendChild(btn);
             });
         }
-        
-        function handleAnswer(isCorrect, correctAnswerText = '') {
-            if (isCorrect) {
-                score++;
-                feedbackMessage.textContent = '答對了！';
-                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-green-600';
-            } else {
-                feedbackMessage.textContent = `答錯了！答案是: ${correctAnswerText}`;
-                feedbackMessage.className = 'text-center font-bold my-4 h-6 text-red-600';
-                addWrongAnswerToPool();
-            }
-            scoreText.textContent = `分數: ${score}`;
-            nextBtn.classList.remove('hidden');
+
+        function selectOption(btnElement, isCorrectLogic) {
+            document.querySelectorAll('.option-card').forEach(b => b.classList.remove('selected'));
+            btnElement.classList.add('selected');
+            selectedOption = { element: btnElement, isCorrect: isCorrectLogic };
+            els.checkBtn.disabled = false;
+            els.checkBtn.classList.remove('opacity-50', 'cursor-not-allowed');
         }
 
-        function checkMultipleChoiceAnswer(selectedAnswerText, correctQuestion, button) {
-            const buttons = multipleChoiceOptions.querySelectorAll('button');
-            buttons.forEach(btn => btn.disabled = true);
-            
-            const correctAnswerText = correctQuestion.chinese.join(' / ');
-            const isCorrect = (selectedAnswerText === correctAnswerText);
-            
-            if (isCorrect) {
-                button.classList.add('correct');
-            } else {
-                button.classList.add('incorrect');
+        function speakWord() {
+            const utterance = new SpeechSynthesisUtterance(els.qWord.textContent);
+            utterance.lang = 'en-US';
+            speechSynthesis.speak(utterance);
+        }
+
+        els.checkBtn.onclick = () => {
+            const currentQ = currentQuiz[currentQuestionIndex];
+            let isCorrect = false;
+            const correctText = currentQ.chinese.join(' / ');
+
+            if (quizMode === 'multiple-choice') {
+                if (!selectedOption) return;
+                isCorrect = selectedOption.isCorrect;
+                const buttons = els.mcOptions.querySelectorAll('button');
                 buttons.forEach(btn => {
-                    if (btn.textContent === correctAnswerText) btn.classList.add('correct');
+                    btn.disabled = true;
+                    if (btn.textContent === correctText) btn.classList.add('correct');
+                    else if (btn === selectedOption.element && !isCorrect) btn.classList.add('incorrect');
                 });
+            } else {
+                const userVal = els.ansInput.value.trim();
+                if(!userVal) return;
+                isCorrect = currentQ.chinese.some(c => userVal.includes(c) || c.includes(userVal));
             }
-            handleAnswer(isCorrect, correctAnswerText);
-        }
-        
-        function checkFillInAnswer() {
-            const userAnswer = answerInput.value.trim();
-            if (!userAnswer) return;
-            
-            const question = currentQuiz[currentQuestionIndex];
-            const correctAnswers = question.chinese;
-            const isCorrect = correctAnswers.some(correct => userAnswer.includes(correct) || correct.includes(userAnswer));
-            
-            submitFillInBtn.disabled = true;
-            answerInput.disabled = true;
-            answerInput.classList.add(isCorrect ? 'correct' : 'incorrect');
 
-            handleAnswer(isCorrect, correctAnswers.join(' / '));
-        }
+            handleResult(isCorrect, correctText);
+        };
 
-        submitFillInBtn.onclick = checkFillInAnswer;
-        answerInput.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' && !submitFillInBtn.disabled) {
-                event.preventDefault(); 
-                checkFillInAnswer();
+        els.ansInput.addEventListener('keydown', (e) => {
+            if(e.key === 'Enter') {
+                e.preventDefault();
+                if(!els.checkBtn.disabled && els.continueBtn.classList.contains('hidden')) els.checkBtn.click();
+                else if(!els.continueBtn.classList.contains('hidden')) els.continueBtn.click();
             }
         });
 
-        nextBtn.onclick = () => {
+        function handleResult(isCorrect, correctText) {
+            if (isCorrect) {
+                score++;
+                userData.totalCorrect++; 
+            } else {
+                const cleanQ = {...currentQuiz[currentQuestionIndex]};
+                delete cleanQ.isReview;
+                if (!wrongAnswersReviewPool.some(w => w.english === cleanQ.english)) {
+                    wrongAnswersReviewPool.push(cleanQ);
+                }
+            }
+            els.score.textContent = score;
+            showFeedbackSheet(isCorrect, correctText);
+            saveUserData();
+        }
+
+        function showFeedbackSheet(isCorrect, correctText) {
+            els.checkBtn.classList.add('hidden');
+            els.continueBtn.classList.remove('hidden');
+            els.feedbackBox.classList.remove('hidden');
+            els.bottomBar.className = `fixed bottom-0 left-0 right-0 border-t-2 p-4 pb-6 z-40 transition-colors duration-300 ${isCorrect ? 'bg-green-100 border-green-200' : 'bg-red-100 border-red-200'}`;
+            
+            const icon = document.getElementById('feedback-icon');
+            const title = document.getElementById('feedback-title');
+            const detail = document.getElementById('feedback-detail');
+
+            if (isCorrect) {
+                icon.innerHTML = '🎉';
+                icon.className = "w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-white text-green-500 shadow-sm";
+                title.textContent = "太棒了！";
+                title.className = "font-extrabold text-xl text-green-700";
+                detail.textContent = "答案完全正確";
+                detail.className = "text-sm font-medium text-green-600";
+                els.continueBtn.className = "btn-game btn-primary w-full md:w-auto md:px-12 py-3 text-lg";
+            } else {
+                icon.innerHTML = '❌';
+                icon.className = "w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-white text-red-500 shadow-sm";
+                title.textContent = "正確答案是：";
+                title.className = "font-extrabold text-xl text-red-700";
+                detail.textContent = correctText;
+                detail.className = "text-sm font-medium text-red-600";
+                els.continueBtn.className = "btn-game btn-danger w-full md:w-auto md:px-12 py-3 text-lg";
+            }
+            els.continueBtn.focus();
+        }
+
+        els.continueBtn.onclick = () => {
             currentQuestionIndex++;
             loadQuestion();
         };
 
-        function resetQuestionUI() {
-            feedbackMessage.textContent = '';
-            feedbackMessage.className = 'text-center font-bold my-4 h-6';
-            nextBtn.classList.add('hidden');
-            multipleChoiceOptions.innerHTML = '';
-            answerInput.value = '';
-            answerInput.className = 'w-full px-4 py-3 border-2 border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition';
-            answerInput.disabled = false;
-            submitFillInBtn.disabled = false;
+        function resetBottomBar() {
+            els.bottomBar.className = "fixed bottom-0 left-0 right-0 border-t-2 border-gray-100 bg-white p-4 pb-6 z-40 transition-colors duration-300";
+            els.feedbackBox.classList.add('hidden');
+            els.checkBtn.classList.remove('hidden');
+            els.continueBtn.classList.add('hidden');
         }
 
-        function showResults() {
-            quizScreen.classList.add('hidden');
-            resultsScreen.classList.remove('hidden');
-            finalScore.textContent = `${score} / ${quizLength}`;
+        function endQuiz() {
+            els.quiz.classList.add('hidden');
+            els.bottomBar.classList.add('hidden');
+            els.header.classList.add('hidden');
+            els.results.classList.remove('hidden');
+            
+            document.getElementById('final-score').textContent = score;
+            const percentage = Math.round((score / quizLength) * 100);
+            document.getElementById('accuracy-text').textContent = `${percentage}%`;
+            
+            userData.quizzesCompleted++;
+            if (!userData.playedBanks.includes(selectedBank)) {
+                userData.playedBanks.push(selectedBank);
+            }
+
+            if (percentage === 100) {
+                if (!userData.perfectBanks.includes(selectedBank) && selectedBank !== 'bank_all') {
+                    userData.perfectBanks.push(selectedBank);
+                }
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 }, colors: ['#58cc02', '#2dd4bf', '#facc15'] });
+            } else if (percentage > 50) {
+                confetti({ particleCount: 50, spread: 50, origin: { y: 0.6 }});
+            }
+
+            saveUserData();
+            checkAndUnlockAchievements();
         }
 
-        function restartQuiz() {
-            startQuiz(quizMode); 
-        }
-
+        function restartQuiz() { startQuiz(quizMode); }
         function goToMenu() {
-            resultsScreen.classList.add('hidden');
-            modeSelection.classList.add('hidden'); 
-            homeScreen.classList.remove('hidden');
-            selectedBank = ''; 
+            els.quiz.classList.add('hidden');
+            els.results.classList.add('hidden');
+            els.bottomBar.classList.add('hidden');
+            els.header.classList.add('hidden');
+            els.home.classList.remove('hidden');
+            renderHome();
         }
-
-        // --- PWA Service Worker Registration ---
+        
+        // PWA Service Worker (Simple Cache)
         function registerServiceWorker() {
             if ('serviceWorker' in navigator) {
-                // Define the scope path here, outside of the template literal
-                const SCOPE_PATH = '/vocab-quiz-pwa/';
+                // 使用 inline script 創建簡單的 service worker
                 const swCode = `
-                    const CACHE_NAME = 'vocab-quiz-pwa-v8';
-                    // These variables are now hardcoded with the value from the outer scope
-                    const urlsToCache = [
-                        '${SCOPE_PATH}',
-                        '${SCOPE_PATH}index.html',
-                        '${SCOPE_PATH}icons/icon-192x192.png',
-                        '${SCOPE_PATH}icons/icon-512x512.png'
-                    ];
-
-                    self.addEventListener('install', e => e.waitUntil(caches.open(CACHE_NAME).then(c => c.addAll(urlsToCache))));
-                    self.addEventListener('activate', e => e.waitUntil(caches.keys().then(keys => Promise.all(keys.map(k => k !== CACHE_NAME ? caches.delete(k) : null))).then(() => self.clients.claim())));
+                    const CACHE_NAME = 'vocab-app-v9';
+                    self.addEventListener('install', e => e.waitUntil(self.skipWaiting()));
+                    self.addEventListener('activate', e => e.waitUntil(self.clients.claim()));
                     self.addEventListener('fetch', e => {
-                        if (e.request.mode === 'navigate') {
-                            e.respondWith(caches.match(e.request).then(res => res || fetch(e.request).catch(() => caches.match('${SCOPE_PATH}index.html'))));
-                            return;
-                        }
-                        e.respondWith(caches.match(e.request).then(res => res || fetch(e.request)));
+                        e.respondWith(fetch(e.request).catch(() => caches.match(e.request)));
                     });
                 `;
                 const blob = new Blob([swCode], { type: 'application/javascript' });
-                const swUrl = URL.createObjectURL(blob);
-                navigator.serviceWorker.register(swUrl)
-                    .then(reg => console.log('ServiceWorker registration successful.'))
-                    .catch(err => console.log('ServiceWorker registration failed: ', err));
+                navigator.serviceWorker.register(URL.createObjectURL(blob))
+                    .catch(err => console.log('SW Error:', err));
             }
         }
-        
-        document.addEventListener('DOMContentLoaded', () => {
-            registerServiceWorker();
+
+        window.addEventListener('resize', () => {
+            document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
         });
 
+        // Start
+        init();
     </script>
 </body>
 </html>
-
